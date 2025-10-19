@@ -6,13 +6,13 @@ from qtpy.QtWidgets import QWidget
 class OptionsWidget(QWidget):
 
 
-    def __init__(self, viewer, app, name):
+    def __init__(self, viewer, options):
         super().__init__()
         self.viewer = viewer
-        self.application = app
-        self.name = name
-        self.options = Options(self.application, self.name)
+        self.options = options
         self.fieldWidth = 50
+        self.fields = [
+        ]
 
 
     def _onOKButtonClicked(self):

@@ -14,7 +14,7 @@ class Options:
         self.items = {}
         self.defaultItems = None
         self.dataFolder = appdirs.user_data_dir(self.applicationName)
-        os.makedirs( self.dataFolder, exist_ok=True)
+        os.makedirs(self.dataFolder, exist_ok=True)
         self.optionsPath = os.path.join(self.dataFolder, self.optionsName + "_options.json")
 
 
@@ -47,3 +47,38 @@ class Options:
     def set(self, name, value):
         self.items[name] = value
 
+
+    def addImage(self, name='image', value=None, transient=True, position=None):
+        position = self._getPosition(position)
+        self.items[name] = {'value': value,
+                            'transient': transient,
+                            'position': position}
+
+
+    def addInt(self, name='size', type=int, value=1, transient=False, position=None, widget="input"):
+        position = self._getPosition(position)
+        self.items[name] = {'type': type,
+                            'value': value,
+                            'transient': transient,
+                            'position': position,
+                            'widget': widget}
+
+
+    def addChoice(self, name="footprint", value=None, choices=None, transient=False, position=None):
+        if not choices:
+            choices = []
+        self.items[name] = {
+            'name': name,
+            'value': value,
+            'choices': choices,
+            'transient': transient,
+            'position': position
+        }
+
+
+
+
+    def _getPosition(self, position):
+        if not position:
+            position = len(self.items.keys())
+        return position
