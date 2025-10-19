@@ -48,31 +48,36 @@ class Options:
         self.items[name] = value
 
 
-    def addImage(self, name='image', value=None, transient=True, position=None):
+    def addImage(self, name='image', value=None, transient=True, position=None, callback=None):
         position = self._getPosition(position)
         self.items[name] = {'value': value,
+                            'type': 'image',
                             'transient': transient,
-                            'position': position}
+                            'position': position,
+                            'callback': callback}
 
 
-    def addInt(self, name='size', type=int, value=1, transient=False, position=None, widget="input"):
+    def addInt(self, name='size', value=1, transient=False, position=None, widget="input", callback=None):
         position = self._getPosition(position)
-        self.items[name] = {'type': type,
+        self.items[name] = {'type': 'int',
                             'value': value,
                             'transient': transient,
                             'position': position,
-                            'widget': widget}
+                            'widget': widget,
+                            'callback': callback}
 
 
-    def addChoice(self, name="footprint", value=None, choices=None, transient=False, position=None):
+    def addChoice(self, name="footprint", value=None, choices=None, transient=False, position=None, callback=None):
         if not choices:
             choices = []
         self.items[name] = {
             'name': name,
             'value': value,
+            'type': 'choice',
             'choices': choices,
             'transient': transient,
-            'position': position
+            'position': position,
+            'callback': callback
         }
 
 

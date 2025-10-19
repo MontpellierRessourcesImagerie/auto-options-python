@@ -1,10 +1,10 @@
-import sys
-from qtpy.QtWidgets import QApplication
+import napari
 from autooptions.options import Options
 from autooptions.widget import OptionsWidget
 
 
-app = QApplication(sys.argv)
+viewer = napari.Viewer()
+
 
 # Create a Qt widget, which will be our window.
 options = Options("Test_Auto_Options", "Median Filter")
@@ -13,8 +13,9 @@ options.addInt(name='size xy', value=3, widget="input")
 options.addInt(name='size z', value=1, widget="input")
 options.addChoice(name='footprint', value=None, choices=["none", "cube", "ball", "octahedron"])
 options.addInt(name='radius', value=1, widget="input")
-window = OptionsWidget(None, options)
-window.show()  # IMPORTANT!!!!! Windows are hidden by default.
+widget = OptionsWidget(viewer, options)
 
-# Start the event loop.
-app.exec()
+
+viewer.window.add_dock_widget(widget)
+viewer.show()
+napari.run()

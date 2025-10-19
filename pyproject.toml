@@ -32,6 +32,9 @@ dependencies = [
     "appdirs",
     "pyqt5",
     "qtpy",
+    "napari",
+    "pyperclip",
+    "matplotlib",
 ]
 
 
