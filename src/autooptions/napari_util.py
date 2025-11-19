@@ -26,6 +26,17 @@ class NapariUtil:
         return self.getLayersOfType(Image)
 
 
+    def getFFTLayers(self):
+        """ Return all fft layers
+
+                        :return: A list of the fft layers in the viewer
+                        :rtype: [napari.layers.image.Image.Image]
+                        """
+        imageLayers = self.getImageLayers()
+        fftLayers = [layer for layer in imageLayers if 'fft' in layer.metadata.keys()]
+        return fftLayers
+
+
     def getLabelLayers(self):
         """ Return all label layers
 

@@ -13,9 +13,11 @@ class Options:
         self.applicationName = applicationName
         self.items = {}
         self.defaultItems = None
-        self.dataFolder = appdirs.user_data_dir(self.applicationName)
+        appName = self.applicationName.replace(' ', '_')
+        self.dataFolder = appdirs.user_data_dir(appName)
         os.makedirs(self.dataFolder, exist_ok=True)
-        self.optionsPath = os.path.join(self.dataFolder, self.optionsName + "_options.json")
+        optName = self.optionsName.replace(' ', '_')
+        self.optionsPath = os.path.join(self.dataFolder, optName + "_options.json")
 
 
     def setDefaultValues(self, defaultItems):
@@ -37,11 +39,19 @@ class Options:
         if not os.path.exists(self.optionsPath):
             self.save()
         with open(self.optionsPath) as f:
-            self.items = json.load(f)
+            items = json.load(f)
+        for key, value in items.items():
+            if value['transient']:
+                continue
+            self.items[key] = value
 
 
     def get(self, name):
         return self.items[name]
+
+
+    def value(self, name):
+        return self.get(name)['value']
 
 
     def set(self, name, value):
@@ -52,6 +62,15 @@ class Options:
         position = self._getPosition(position)
         self.items[name] = {'value': value,
                             'type': 'image',
+                            'transient': transient,
+                            'position': position,
+                            'callback': callback}
+
+
+    def addFFT(self, name='image', value=None, transient=True, position=None, callback=None):
+        position = self._getPosition(position)
+        self.items[name] = {'value': value,
+                            'type': 'fft',
                             'transient': transient,
                             'position': position,
                             'callback': callback}
@@ -79,8 +98,6 @@ class Options:
             'position': position,
             'callback': callback
         }
-
-
 
 
     def _getPosition(self, position):
