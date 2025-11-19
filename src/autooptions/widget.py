@@ -15,10 +15,12 @@ class OptionsWidget(QWidget):
         self.fieldWidth = 50
         self.napariUtil = NapariUtil(self.viewer)
         self.imageLayers = self.napariUtil.getImageLayers()
+        self.fftLayers = self.napariUtil.getFFTLayers()
         self.labelLayers = self.napariUtil.getLabelLayers()
         self.pointLayers = self.napariUtil.getPointsLayers()
         self.mainLayout = None
         self.imageComboBoxes = []
+        self.fftComboBoxes = []
         self.labelComboBoxes = []
         self.pointComboBoxes = []
         self.widgets = {}
@@ -39,7 +41,7 @@ class OptionsWidget(QWidget):
             if item['type'] == 'fft':
                 layout, widget = self.getFFTWidget(name, item)
                 self.mainLayout.addLayout(layout)
-                self.imageComboBoxes.append(widget)
+                self.fftComboBoxes.append(widget)
             if item['type'] == 'int':
                 layout, widget = self.getIntWidget(name, item)
                 self.mainLayout.addLayout(layout)
@@ -63,10 +65,10 @@ class OptionsWidget(QWidget):
 
     def getFFTWidget(self, name, item):
         layout = QHBoxLayout()
-        self.imageLayers = self.napariUtil.getFFTLayers()
+        self.fftLayers = self.napariUtil.getFFTLayers()
         label, widget = WidgetTool.getComboInput(self,
                                                  name+":",
-                                                 self.imageLayers)
+                                                 self.fftLayers)
         layout.addWidget(label)
         layout.addWidget(widget)
         return layout, widget
@@ -147,12 +149,15 @@ class OptionsWidget(QWidget):
         imageLayers = self.napariUtil.getImageLayers()
         labelLayers = self.napariUtil.getLabelLayers()
         pointLayers = self.napariUtil.getPointsLayers()
+        fftLayers = self.napariUtil.getFFTLayers()
         for comboBox in self.imageComboBoxes:
             WidgetTool.replaceItemsInComboBox(comboBox, imageLayers)
         for comboBox in self.labelComboBoxes:
             WidgetTool.replaceItemsInComboBox(comboBox, labelLayers)
         for comboBox in self.pointComboBoxes:
             WidgetTool.replaceItemsInComboBox(comboBox, pointLayers)
+        for comboBox in self.fftComboBoxes:
+            WidgetTool.replaceItemsInComboBox(comboBox, fftLayers)
 
 
     def getImageLayer(self, name):

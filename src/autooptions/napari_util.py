@@ -33,7 +33,8 @@ class NapariUtil:
                         :rtype: [napari.layers.image.Image.Image]
                         """
         imageLayers = self.getImageLayers()
-        fftLayers = [layer for layer in imageLayers if 'fft' in layer.metadata.keys()]
+        imageLayers = [self.getLayerWithName(name) for name in imageLayers]
+        fftLayers = [layer.name for layer in imageLayers if 'fft' in layer.metadata.keys()]
         return fftLayers
 
 
