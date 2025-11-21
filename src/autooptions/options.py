@@ -76,9 +76,19 @@ class Options:
                             'callback': callback}
 
 
-    def addInt(self, name='size', value=1, transient=False, position=None, widget="input", callback=None):
+    def addInt(self, name, value=1, transient=False, position=None, widget="input", callback=None):
         position = self._getPosition(position)
         self.items[name] = {'type': 'int',
+                            'value': value,
+                            'transient': transient,
+                            'position': position,
+                            'widget': widget,
+                            'callback': callback}
+
+
+    def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", callback=None):
+        position = self._getPosition(position)
+        self.items[name] = {'type': 'float',
                             'value': value,
                             'transient': transient,
                             'position': position,

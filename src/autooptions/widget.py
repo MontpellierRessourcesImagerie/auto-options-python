@@ -45,6 +45,9 @@ class OptionsWidget(QWidget):
             if item['type'] == 'int':
                 layout, widget = self.getIntWidget(name, item)
                 self.mainLayout.addLayout(layout)
+            if item['type'] == 'float':
+                layout, widget = self.getFloatWidget(name, item)
+                self.mainLayout.addLayout(layout)
             if item['type'] == 'choice':
                 layout, widget = self.getChoiceWidget(name, item)
                 self.mainLayout.addLayout(layout)
@@ -75,6 +78,18 @@ class OptionsWidget(QWidget):
 
 
     def getIntWidget(self, name, item):
+        layout = QHBoxLayout()
+        label, widget = WidgetTool.getLineInput(self,
+                                                name,
+                                                item['value'],
+                                                self.fieldWidth,
+                                                item['callback'])
+        layout.addWidget(label)
+        layout.addWidget(widget)
+        return layout, widget
+
+
+    def getFloatWidget(self, name, item):
         layout = QHBoxLayout()
         label, widget = WidgetTool.getLineInput(self,
                                                 name,
@@ -134,7 +149,8 @@ class OptionsWidget(QWidget):
                 item['value'] = text
             if item['type'] == 'int':
                 item['value'] = int(widget.text().strip())
-
+            if item['type'] == 'float':
+                item['value'] = float(widget.text().strip())
 
 
     def ignoreChange(self):
