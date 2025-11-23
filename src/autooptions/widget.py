@@ -51,6 +51,12 @@ class OptionsWidget(QWidget):
             if item['type'] == 'choice':
                 layout, widget = self.getChoiceWidget(name, item)
                 self.mainLayout.addLayout(layout)
+            if item['type'] == 'str':
+                layout, widget = self.getStrWidget(name, item)
+                self.mainLayout.addLayout(layout)
+            if item['type'] == 'bool':
+                layout, widget = self.getBoolWidget(name, item)
+                self.mainLayout.addLayout(layout)
             self.widgets[name] = widget
         self.setLayout(self.mainLayout)
 
@@ -101,12 +107,36 @@ class OptionsWidget(QWidget):
         return layout, widget
 
 
+    def getStrWidget(self, name, item):
+        layout = QHBoxLayout()
+        label, widget = WidgetTool.getLineInput(self,
+                                                name,
+                                                item['value'],
+                                                self.fieldWidth,
+                                                item['callback'])
+        layout.addWidget(label)
+        layout.addWidget(widget)
+        return layout, widget
+
+
     def getChoiceWidget(self, name, item):
         layout = QHBoxLayout()
         label, widget = WidgetTool.getComboInput(self,
                                                  name+":",
                                                  item['choices'])
         widget.setCurrentText(item['value'])
+        layout.addWidget(label)
+        layout.addWidget(widget)
+        return layout, widget
+
+
+    def getBoolWidget(self, name, item):
+        layout = QHBoxLayout()
+        label, widget = WidgetTool.getCheckbox(self,
+                                                name,
+                                                item['value'],
+                                                self.fieldWidth,
+                                                item['callback'])
         layout.addWidget(label)
         layout.addWidget(widget)
         return layout, widget
@@ -151,6 +181,11 @@ class OptionsWidget(QWidget):
                 item['value'] = int(widget.text().strip())
             if item['type'] == 'float':
                 item['value'] = float(widget.text().strip())
+            if item['type'] == 'str':
+                item['value'] = widget.text()
+                print(item['value'])
+            if item['type'] == 'bool':
+                item['value'] = widget.isChecked()
 
 
     def ignoreChange(self):

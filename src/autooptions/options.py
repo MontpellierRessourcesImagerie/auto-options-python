@@ -110,6 +110,26 @@ class Options:
         }
 
 
+    def addStr(self, name, value="", transient=False, position=None, callback=None):
+        position = self._getPosition(position)
+        self.items[name] = {'type': 'str',
+                            'value': value,
+                            'transient': transient,
+                            'position': position,
+                            'widget': "input",
+                            'callback': callback}
+
+
+    def addBool(self, name, value=False, transient=False, position=None, callback=None):
+        position = self._getPosition(position)
+        self.items[name] = {'type': 'bool',
+                            'value': value,
+                            'transient': transient,
+                            'position': position,
+                            'widget': "checkbox",
+                            'callback': callback}
+
+
     def _getPosition(self, position):
         if not position:
             position = len(self.items.keys())
