@@ -34,112 +34,147 @@ class OptionsWidget(QWidget):
         self.mainLayout = QVBoxLayout()
         for name, item in self.options.items.items():
             widget = None
+            activator = None
             if item['type'] == 'image':
-                layout, widget = self.getImageWidget(name, item)
+                layout, widget, activator = self.getImageWidget(name, item)
                 self.mainLayout.addLayout(layout)
                 self.imageComboBoxes.append(widget)
             if item['type'] == 'fft':
-                layout, widget = self.getFFTWidget(name, item)
+                layout, widget, activator = self.getFFTWidget(name, item)
                 self.mainLayout.addLayout(layout)
                 self.fftComboBoxes.append(widget)
             if item['type'] == 'int':
-                layout, widget = self.getIntWidget(name, item)
+                layout, widget, activator = self.getIntWidget(name, item)
                 self.mainLayout.addLayout(layout)
             if item['type'] == 'float':
-                layout, widget = self.getFloatWidget(name, item)
+                layout, widget, activator = self.getFloatWidget(name, item)
                 self.mainLayout.addLayout(layout)
             if item['type'] == 'choice':
-                layout, widget = self.getChoiceWidget(name, item)
+                layout, widget, activator = self.getChoiceWidget(name, item)
                 self.mainLayout.addLayout(layout)
             if item['type'] == 'str':
-                layout, widget = self.getStrWidget(name, item)
+                layout, widget, activator = self.getStrWidget(name, item)
                 self.mainLayout.addLayout(layout)
             if item['type'] == 'bool':
-                layout, widget = self.getBoolWidget(name, item)
+                layout, widget, activator = self.getBoolWidget(name, item)
                 self.mainLayout.addLayout(layout)
             self.widgets[name] = widget
+            if activator is not None:
+                activator.stateChanged.connect(lambda _, cb=activator, n=name: self.options.items[n].__setitem__('activated', cb.isChecked()))
         self.setLayout(self.mainLayout)
 
 
     def getImageWidget(self, name, item):
         layout = QHBoxLayout()
         self.imageLayers = self.napariUtil.getImageLayers()
-        label, widget = WidgetTool.getComboInput(self,
-                                                 name+":",
-                                                 self.imageLayers)
+        label, widget, activator = WidgetTool.getComboInput(self,
+                                                 labelText=name+":",
+                                                 values=self.imageLayers,
+                                                 activatable=item.get('activable', False),
+                                                 activated=item.get('activated', True),
+                                                 callback=None)
+        if activator:
+            layout.addWidget(activator)
         layout.addWidget(label)
         layout.addWidget(widget)
-        return layout, widget
+        return layout, widget, activator
 
 
     def getFFTWidget(self, name, item):
         layout = QHBoxLayout()
         self.fftLayers = self.napariUtil.getFFTLayers()
-        label, widget = WidgetTool.getComboInput(self,
-                                                 name+":",
-                                                 self.fftLayers)
+        label, widget, activator = WidgetTool.getComboInput(self,
+                                                 labelText=name+":",
+                                                 values=self.fftLayers,
+                                                 activatable=item.get('activable', False),
+                                                 activated=item.get('activated', True),
+                                                 callback=None)
+        if activator:
+            layout.addWidget(activator)
         layout.addWidget(label)
         layout.addWidget(widget)
-        return layout, widget
+        return layout, widget, activator
 
 
     def getIntWidget(self, name, item):
         layout = QHBoxLayout()
-        label, widget = WidgetTool.getLineInput(self,
-                                                name,
-                                                item['value'],
-                                                self.fieldWidth,
-                                                item['callback'])
+        label, widget, activator = WidgetTool.getLineInput(self,
+                                                labelText=name+":",
+                                                defaultValue=item['value'],
+                                                fieldWidth=self.fieldWidth,
+                                                activatable=item.get('activable', False),
+                                                activated=item.get('activated', True),
+                                                callback=item['callback'])
+        if activator:
+            layout.addWidget(activator)
         layout.addWidget(label)
         layout.addWidget(widget)
-        return layout, widget
+        return layout, widget, activator
 
 
     def getFloatWidget(self, name, item):
         layout = QHBoxLayout()
-        label, widget = WidgetTool.getLineInput(self,
-                                                name,
-                                                item['value'],
-                                                self.fieldWidth,
-                                                item['callback'])
+        label, widget, activator = WidgetTool.getLineInput(self,
+                                                labelText=name+":",
+                                                defaultValue=item['value'],
+                                                fieldWidth=self.fieldWidth,
+                                                activatable=item.get('activable', False),
+                                                activated=item.get('activated', True),
+                                                callback=item['callback'])
+        if activator:
+            layout.addWidget(activator)
         layout.addWidget(label)
         layout.addWidget(widget)
-        return layout, widget
+        return layout, widget, activator
 
 
     def getStrWidget(self, name, item):
         layout = QHBoxLayout()
-        label, widget = WidgetTool.getLineInput(self,
-                                                name,
-                                                item['value'],
-                                                self.fieldWidth,
-                                                item['callback'])
+        label, widget, activator = WidgetTool.getLineInput(self,
+                                                labelText=name+":",
+                                                defaultValue=item['value'],
+                                                fieldWidth=self.fieldWidth,
+                                                activatable=item.get('activable', False),
+                                                activated=item.get('activated', True),
+                                                callback=item['callback'])
+        
+        if activator:
+            layout.addWidget(activator)
         layout.addWidget(label)
         layout.addWidget(widget)
-        return layout, widget
+        return layout, widget, activator
 
 
     def getChoiceWidget(self, name, item):
         layout = QHBoxLayout()
-        label, widget = WidgetTool.getComboInput(self,
-                                                 name+":",
-                                                 item['choices'])
+        label, widget, activator = WidgetTool.getComboInput(self,
+                                                 labelText=name+":",
+                                                 values=item['choices'],
+                                                 activatable=item.get('activable', False),
+                                                 activated=item.get('activated', True),
+                                                 callback=item.get('callback', None))
         widget.setCurrentText(item['value'])
+        if activator:
+            layout.addWidget(activator)
         layout.addWidget(label)
         layout.addWidget(widget)
-        return layout, widget
+        return layout, widget, activator
 
 
     def getBoolWidget(self, name, item):
         layout = QHBoxLayout()
-        label, widget = WidgetTool.getCheckbox(self,
-                                                name,
-                                                item['value'],
-                                                self.fieldWidth,
-                                                item['callback'])
+        label, widget, activator = WidgetTool.getCheckbox(self,
+                                                labelText=name+":",
+                                                defaultValue=item['value'],
+                                                fieldWidth=self.fieldWidth,
+                                                activatable=item.get('activable', False),
+                                                activated=item.get('activated', True),
+                                                callback=item['callback'])
+        if activator:
+            layout.addWidget(activator)
         layout.addWidget(label)
         layout.addWidget(widget)
-        return layout, widget
+        return layout, widget, activator
 
 
     def addApplyButton(self, callback):
@@ -214,3 +249,19 @@ class OptionsWidget(QWidget):
     def getImageLayer(self, name):
         layer = self.napariUtil.getLayerWithName(self.options.get(name)['value'])
         return layer
+    
+
+    def getCurrentImageLayer(self):
+        return self.napariUtil.getCurrentImageLayer()
+    
+
+    def getCurrentShapesLayer(self):
+        return self.napariUtil.getCurrentShapesLayer()
+    
+
+    def getCurrentPointsLayer(self):
+        return self.napariUtil.getCurrentPointsLayer()
+    
+
+    def getCurrentLabelsLayer(self):
+        return self.napariUtil.getCurrentLabelsLayer()

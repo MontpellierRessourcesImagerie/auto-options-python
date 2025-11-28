@@ -18,7 +18,7 @@ class WidgetTool:
     """
 
     @staticmethod
-    def getLineInput(parent, labelText, defaultValue, fieldWidth, callback):
+    def getLineInput(parent, labelText, defaultValue, fieldWidth, activatable, activated, callback):
         """Returns a label displaying the given text and an input field
         with the given default value.
 
@@ -36,14 +36,25 @@ class WidgetTool:
         label.setText(labelText)
         input = QLineEdit(parent)
         input.setText(str(defaultValue))
+        activator = None
+        if activatable:
+            activator = QCheckBox(parent)
+            activator.setChecked(activated)
+            input.setEnabled(activated)
+            label.setEnabled(activated)
+            def onStateChanged(state):
+                isEnabled = state == Qt.Checked
+                input.setEnabled(isEnabled)
+                label.setEnabled(isEnabled)
+            activator.stateChanged.connect(onStateChanged)
         if callback:
             input.textChanged.connect(callback)
         input.setMaximumWidth(fieldWidth)
-        return label, input
+        return label, input, activator
 
 
     @staticmethod
-    def getComboInput(parent, labelText, values):
+    def getComboInput(parent, labelText, values, activatable, activated, callback):
         """Returns a label displaying the given text and a combo-box
         with the given values.
 
@@ -57,7 +68,20 @@ class WidgetTool:
         label.setText(labelText)
         input = QComboBox(parent)
         input.addItems(values)
-        return label, input
+        activator = None
+        if activatable:
+            activator = QCheckBox(parent)
+            activator.setChecked(activated)
+            input.setEnabled(activated)
+            label.setEnabled(activated)
+            def onStateChanged(state):
+                isEnabled = state == Qt.Checked
+                input.setEnabled(isEnabled)
+                label.setEnabled(isEnabled)
+            activator.stateChanged.connect(onStateChanged)
+        if callback:
+            input.currentIndexChanged.connect(callback)
+        return label, input, activator
 
 
     @staticmethod
@@ -81,16 +105,26 @@ class WidgetTool:
 
 
     @staticmethod
-    def getCheckbox(parent, labelText, defaultValue, fieldWidth, callback):
+    def getCheckbox(parent, labelText, defaultValue, fieldWidth, activatable, activated, callback):
         label = QLabel(parent)
         label.setText(labelText)
         cb = QCheckBox(parent)
         cb.setChecked(defaultValue)
+        activator = None
+        if activatable:
+            activator = QCheckBox(parent)
+            activator.setChecked(activated)
+            cb.setEnabled(activated)
+            label.setEnabled(activated)
+            def onStateChanged(state):
+                isEnabled = state == Qt.Checked
+                cb.setEnabled(isEnabled)
+                label.setEnabled(isEnabled)
+            activator.stateChanged.connect(onStateChanged)
         if callback:
             cb.stateChanged.connect(callback)
         cb.setMaximumWidth(fieldWidth)
-        return label, cb
-
+        return label, cb, activator
 
 
 class TableView(QTableWidget):

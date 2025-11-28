@@ -52,51 +52,63 @@ class Options:
 
     def value(self, name):
         return self.get(name)['value']
+    
+
+    def isActivated(self, name):
+        return (not self.items[name]['activable']) or self.items[name]['activated']
 
 
     def set(self, name, value):
         self.items[name] = value
 
 
-    def addImage(self, name='image', value=None, transient=True, position=None, callback=None):
+    def addImage(self, name='image', value=None, transient=True, position=None, activable=False, activated=True, callback=None):
         position = self._getPosition(position)
         self.items[name] = {'value': value,
                             'type': 'image',
                             'transient': transient,
                             'position': position,
+                            'activable': activable,
+                            'activated': activated,
                             'callback': callback}
 
 
-    def addFFT(self, name='image', value=None, transient=True, position=None, callback=None):
+    def addFFT(self, name='image', value=None, transient=True, position=None, activable=False, activated=True, callback=None):
         position = self._getPosition(position)
         self.items[name] = {'value': value,
                             'type': 'fft',
                             'transient': transient,
                             'position': position,
+                            'activable': activable,
+                            'activated': activated,
                             'callback': callback}
 
 
-    def addInt(self, name, value=1, transient=False, position=None, widget="input", callback=None):
+    def addInt(self, name, value=1, transient=False, position=None, widget="input", activable=False, activated=True, callback=None):
         position = self._getPosition(position)
         self.items[name] = {'type': 'int',
                             'value': value,
                             'transient': transient,
                             'position': position,
                             'widget': widget,
+                            'activable': activable,
+                            'activated': activated,
                             'callback': callback}
 
 
-    def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", callback=None):
+    def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", activable=False, activated=True, callback=None):
         position = self._getPosition(position)
         self.items[name] = {'type': 'float',
                             'value': value,
                             'transient': transient,
                             'position': position,
                             'widget': widget,
+                            'activable': activable,
+                            'activated': activated,
                             'callback': callback}
 
 
-    def addChoice(self, name="footprint", value=None, choices=None, transient=False, position=None, callback=None):
+    def addChoice(self, name="footprint", value=None, choices=None, transient=False, position=None, activable=False, activated=True, callback=None):
         if not choices:
             choices = []
         self.items[name] = {
@@ -106,27 +118,33 @@ class Options:
             'choices': choices,
             'transient': transient,
             'position': position,
+            'activable': activable,
+            'activated': activated,
             'callback': callback
         }
 
 
-    def addStr(self, name, value="", transient=False, position=None, callback=None):
+    def addStr(self, name, value="", transient=False, position=None, activable=False, activated=True, callback=None):
         position = self._getPosition(position)
         self.items[name] = {'type': 'str',
                             'value': value,
                             'transient': transient,
                             'position': position,
                             'widget': "input",
+                            'activable': activable,
+                            'activated': activated,
                             'callback': callback}
 
 
-    def addBool(self, name, value=False, transient=False, position=None, callback=None):
+    def addBool(self, name, value=False, transient=False, position=None, activable=False, activated=True, callback=None):
         position = self._getPosition(position)
         self.items[name] = {'type': 'bool',
                             'value': value,
                             'transient': transient,
                             'position': position,
                             'widget': "checkbox",
+                            'activable': activable,
+                            'activated': activated,
                             'callback': callback}
 
 

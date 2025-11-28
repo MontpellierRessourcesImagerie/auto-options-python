@@ -1,6 +1,7 @@
 from napari.layers.labels.labels import Labels
 from napari.layers.points.points import Points
 from napari.layers.image.image import Image
+from napari.layers.shapes.shapes import Shapes
 
 
 
@@ -15,6 +16,52 @@ class NapariUtil:
         :type viewer: napari.viewer.Viewer
         """
         self.viewer = viewer
+
+    
+    def getCurrentLayerOfType(self, layerType):
+        """ Return the currently selected layer if it is of type layerType
+
+        :param layerType: A napari layer type like Labels or Points.
+        :return: The current layer if it is of the given type and None otherwise
+        """
+        layer = self.viewer.layers.selection.active
+        return layer if isinstance(layer, layerType) else None
+    
+
+    def getCurrentImageLayer(self):
+        """ Return the currently selected image layer
+
+        :return: The current image layer if it exists and None otherwise
+        :rtype: napari.layers.image.Image.Image
+        """
+        return self.getCurrentLayerOfType(Image)
+    
+
+    def getCurrentLabelsLayer(self):
+        """ Return the currently selected label layer
+
+        :return: The current label layer if it exists and None otherwise
+        :rtype: napari.layers.labels.labels.Labels
+        """
+        return self.getCurrentLayerOfType(Labels)
+    
+
+    def getCurrentPointsLayer(self):
+        """ Return the currently selected points layer
+
+        :return: The current points layer if it exists and None otherwise
+        :rtype: napari.layers.points.points.Points
+        """
+        return self.getCurrentLayerOfType(Points)
+    
+
+    def getCurrentShapesLayer(self):
+        """ Return the currently selected shapes layer
+
+        :return: The current shapes layer if it exists and None otherwise
+        :rtype: napari.layers.shapes.shapes.Shapes
+        """
+        return self.getCurrentLayerOfType(Shapes)
 
 
     def getImageLayers(self):
@@ -34,7 +81,7 @@ class NapariUtil:
                         """
         imageLayers = self.getImageLayers()
         imageLayers = [self.getLayerWithName(name) for name in imageLayers]
-        fftLayers = [layer.name for layer in imageLayers if 'fft' in layer.metadata.keys()]
+        fftLayers = [layer.name for layer in imageLayers if (layer is not None) and ('fft' in layer.metadata.keys())]
         return fftLayers
 
 
@@ -54,6 +101,15 @@ class NapariUtil:
         :rtype: [napari.layers.points.points.Points]
         """
         return self.getLayersOfType(Points)
+    
+
+    def getShapesLayers(self):
+        """ Return all shapes layers
+
+        :return: A list of the shapes layers in the viewer
+        :rtype: [napari.layers.shapes.shapes.Shapes]
+        """
+        return self.getLayersOfType(Shapes)
 
 
     def getLayersOfType(self, layerType):
@@ -89,7 +145,7 @@ class NapariUtil:
 
     def getDataAndScaleOfLayerWithName(self, name):
         layer = self.getLayerWithName(name)
-        return layer.data, layer.scale, str(layer.units[0])
+        return (layer.data, layer.scale, str(layer.units[0])) if layer else (None, None, None)
 
 
     @staticmethod
