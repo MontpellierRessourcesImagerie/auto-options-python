@@ -36,12 +36,12 @@ class WidgetTool:
         """
         label = QLabel(parent)
         label.setText(labelText)
-        input = QLineEdit(parent)
-        input.setText(str(defaultValue))
+        inputWidget = QLineEdit(parent)
+        inputWidget.setText(str(defaultValue))
         if callback:
-            input.textChanged.connect(callback)
-        input.setMaximumWidth(fieldWidth)
-        return label, input
+            inputWidget.textChanged.connect(callback)
+        inputWidget.setMaximumWidth(fieldWidth)
+        return label, inputWidget
 
 
     @staticmethod
@@ -134,13 +134,12 @@ class TableView(QTableWidget):
 
     def setData(self, table):
         """Clear the table and replace the data in the table with the input table"""
-        self.clear()
         self.data = table
-        self.__setData()
+        self.resetView()
 
 
     def resetView(self):
-        """Remove all data from the table"""
+        """Resets the view to the data of the table view"""
         self.clear()
         self.__setData()
 

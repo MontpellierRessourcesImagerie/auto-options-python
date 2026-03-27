@@ -4,6 +4,8 @@ from qtpy.QtWidgets import QWidget
 from autooptions.qtutil import WidgetTool
 from autooptions.napari_util import NapariUtil
 
+
+
 class OptionsWidget(QWidget):
 
 
