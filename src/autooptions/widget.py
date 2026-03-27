@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton
+from qtpy.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton
 from napari.utils.events import Event
 from qtpy.QtWidgets import QWidget
 from autooptions.qtutil import WidgetTool

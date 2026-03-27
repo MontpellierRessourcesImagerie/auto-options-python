@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 import pyperclip
 import numpy as np
 import matplotlib.pyplot as plt
-from PyQt5.QtWidgets import QHBoxLayout, QCheckBox
+from qtpy.QtWidgets import QHBoxLayout, QCheckBox
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 from qtpy.QtWidgets import QLabel, QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QAction
@@ -11,6 +11,8 @@ from napari.utils import notifications
 from autooptions.array_util import ArrayUtil
 if TYPE_CHECKING:
     import napari
+
+
 
 class WidgetTool:
     """
@@ -82,6 +84,15 @@ class WidgetTool:
 
     @staticmethod
     def getCheckbox(parent, labelText, defaultValue, fieldWidth, callback):
+        """Answers a label and a checkbox checked or unchecked depeding on the default value.
+
+        :param parent: The parent widget of the label and the input field
+        :param labelText: The text of the label
+        :param defaultValue: The boolean default value
+        :param fieldWidth: The maximum width of the checkbox
+        :param callback: A callback function
+        :return: A tupel of a label and a checkbox
+        """
         label = QLabel(parent)
         label.setText(labelText)
         cb = QCheckBox(parent)
@@ -122,25 +133,27 @@ class TableView(QTableWidget):
 
 
     def setData(self, table):
+        """Clear the table and replace the data in the table with the input table"""
         self.clear()
         self.data = table
         self.__setData()
 
 
     def resetView(self):
+        """Remove all data from the table"""
         self.clear()
         self.__setData()
 
 
     def __setData(self):
-        horHeaders = []
+        horizontalHeaders = []
         for n, key in enumerate(self.data.keys()):
-            horHeaders.append(key)
+            horizontalHeaders.append(key)
             for m, item in enumerate(self.data[key]):
                 newItem = QTableWidgetItem(str(item))
                 newItem.setTextAlignment(Qt.AlignRight)
                 self.setItem(m, n, newItem)
-        self.setHorizontalHeaderLabels(horHeaders)
+        self.setHorizontalHeaderLabels(horizontalHeaders)
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
 
@@ -188,9 +201,15 @@ class TableView(QTableWidget):
 
 
 class PlotWidget(QWidget):
-
+    """
+    A widget that contains a pyplot plot.
+    """
 
     def __init__(self, viewer: "napari.viewer.Viewer"):
+        """Create a new empty plot widget.
+
+            param viewer: The napari viewer in which the widget will be displayed
+        """
         super().__init__()
         self.figure = plt.figure()
         self.ax = self.figure.add_subplot(111)
@@ -208,6 +227,8 @@ class PlotWidget(QWidget):
 
 
     def createLayout(self):
+        """Create the layout of the widget.
+        """
         mainLayout = QVBoxLayout()
         canvasLayout = QHBoxLayout()
         canvasLayout.addWidget(self.canvas)
@@ -216,6 +237,8 @@ class PlotWidget(QWidget):
 
 
     def addData(self, X, Y, formatString=None):
+        """Add the data and the format string.
+        """
         self.X.append(X)
         self.Y.append(Y)
         if formatString:
@@ -223,10 +246,14 @@ class PlotWidget(QWidget):
 
 
     def clear(self):
+        """Remove everything from the plot.
+        """
         self.figure.clear()
 
 
     def display(self):
+        """Display the plot as a dock widget in napari.
+        """
         self.ax.set_xlabel(self.xLabel)
         self.ax.set_ylabel(self.yLabel)
         if self.formatStrings:

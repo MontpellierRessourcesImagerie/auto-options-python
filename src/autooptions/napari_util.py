@@ -81,6 +81,11 @@ class NapariUtil:
 
 
     def getLayerWithName(self, name):
+        """ Answer the layer with the given name, if it exists and None otherwise.
+
+        :param name: The name of a layer
+        :return: The layer from napari's layer list that has the given name
+        """
         for layer in self.viewer.layers:
             if layer.name == name:
                 return layer
@@ -88,12 +93,26 @@ class NapariUtil:
 
 
     def getDataAndScaleOfLayerWithName(self, name):
+        """ Answer the data, the scale and the unit of the layer with the given name.
+
+        :param name: The name of a layer
+        :return: A tupel with the data, the scale and the unit of the layer with the given name.
+                 The unit is the unit of the first dimension. The unit is supposed to be the same for all dimensions.
+        """
         layer = self.getLayerWithName(name)
         return layer.data, layer.scale, str(layer.units[0])
 
 
     @staticmethod
     def getOriginalPath(layer):
+        """ Answer the source path of the layer if it represents an image opened from the filesystem and the
+        original path from the metadata if it is a derived image. If it is neither an image opened from a file nor
+        derived from one (for example an image programmatically created) answer None. For the metadata information to
+        be present, the image operations must set it.
+
+        :param layer: The input layer
+        :return: The path of the image in the filesystem if it is known
+        """
         if 'original_path' in layer.metadata.keys():
             return layer.metadata['original_path']
         if layer.source.path:
@@ -103,6 +122,12 @@ class NapariUtil:
 
     @staticmethod
     def copyOriginalPath(srcLayer, destLayer):
+        """Copy the orignal path from one layer to another. This should be used by operations that create images derived
+        from an input image.
+
+        :param srcLayer: The layer from which the original path is copied.
+        :param destLayer: The layer to which the original path is copied.
+        """
         path = NapariUtil.getOriginalPath(srcLayer)
         destLayer.metadata['original_path'] = path
 

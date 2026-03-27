@@ -6,6 +6,9 @@ from copy import copy
 
 
 class Options:
+    """ Options are a list of parameters that are intended to be passed to an operation. Options have
+    a name, a type and a value.
+    """
 
 
     def __init__(self, applicationName, optionsName):
