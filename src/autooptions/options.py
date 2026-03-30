@@ -12,6 +12,15 @@ class Options:
 
 
     def __init__(self, applicationName, optionsName):
+        """
+        Construct an empty Options object for an operation within an application.
+
+        The options will be saved into a file optionsName in the subfolder applicationName of the user-data-folder.
+        Spaces in the names will be replaced by underscores in the folder and filename.
+
+        :param applicationName: The name of the application
+        :param optionsName: The name of the options
+        """
         self.optionsName = optionsName
         self.applicationName = applicationName
         self.items = {}
@@ -24,21 +33,37 @@ class Options:
 
 
     def setDefaultValues(self, defaultItems):
+        """
+        Set the default values for all options in the options object. Currently unused. The idea is that it might be
+        useful to have default values, other than in the code, to which the option can be reset.
+
+        :param defaultItems: A dictionary of default values for all options in the options object.
+        """
         self.defaultItems = defaultItems
 
 
     def getItems(self):
+        """
+        Return the items stored in the options object.
+        :return: A dictionary of all options in the options object.
+        """
         if not self.items and self.defaultItems:
             self.items = copy(self.defaultItems)
         return self.items
 
 
     def save(self):
+        """
+        Save the options as a JSON file.
+        """
         with open(self.optionsPath, 'w') as f:
             json.dump(self.getItems(), f)
 
 
     def load(self):
+        """
+        Load the options as a JSON file.
+        """
         if not os.path.exists(self.optionsPath):
             self.save()
         with open(self.optionsPath) as f:
@@ -50,18 +75,44 @@ class Options:
 
 
     def get(self, name):
+        """
+        Answer the option with the given name.
+        :param name: The name of an option
+        :return: Answers the option with the given name as a dictionary
+        """
         return self.items[name]
 
 
     def value(self, name):
+        """
+        Answer the value of the option with the given name.
+        :param name: The name of an option
+        :return: The value of the option with the given name. The type of the result depends on the type of the option.
+        """
         return self.get(name)['value']
 
 
     def set(self, name, value):
+        """
+        Set the value of the option with the given name.
+
+        :param name: The name of an option
+        :param value: The new value of the option
+        """
         self.items[name] = value
 
 
     def addImage(self, name='image', value=None, transient=True, position=None, callback=None):
+        """
+        Add an option that represents the selection of an image. Image options are often transient.
+
+        :param name: The name of the image option
+        :param value: The value of the image option
+        :param transient: Whether the image option is transient. Transient options are not saved and reloaded.
+        :param position: The position of the image option within the options (Could be used when dictionaries are not
+                         ordered). If none is given, the next free position is used.
+        :param callback: The callback function, that is called when the value of the option is changed.
+        """
         position = self._getPosition(position)
         self.items[name] = {'value': value,
                             'type': 'image',
@@ -81,12 +132,15 @@ class Options:
 
     def addInt(self, name, value=1, transient=False, position=None, widget="input", callback=None):
         position = self._getPosition(position)
+        callbackQualifiedName = None
+        if callback:
+            callbackQualifiedName = callback.__name__
         self.items[name] = {'type': 'int',
                             'value': value,
                             'transient': transient,
                             'position': position,
                             'widget': widget,
-                            'callback': callback}
+                            'callback': callbackQualifiedName}
 
 
     def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", callback=None):

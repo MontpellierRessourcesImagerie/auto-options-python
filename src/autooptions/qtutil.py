@@ -39,27 +39,30 @@ class WidgetTool:
         inputWidget = QLineEdit(parent)
         inputWidget.setText(str(defaultValue))
         if callback:
-            inputWidget.textChanged.connect(callback)
+            inputWidget.textEdited.connect(callback)
         inputWidget.setMaximumWidth(fieldWidth)
         return label, inputWidget
 
 
     @staticmethod
-    def getComboInput(parent, labelText, values):
+    def getComboInput(parent, labelText, values, callback=None):
         """Returns a label displaying the given text and a combo-box
         with the given values.
 
         :param parent: The parent widget of the label and the input field
         :param labelText: The text of the label
         :param values: The values in the list of the combo-box
+        :param callback: A callback function that is called with the new text when the selected text changes.
         :return: A tupel of the label and the input field
         :rtype: (QLabel, QComboBox)
         """
         label = QLabel(parent)
         label.setText(labelText)
-        input = QComboBox(parent)
-        input.addItems(values)
-        return label, input
+        inputCombo = QComboBox(parent)
+        inputCombo.addItems(values)
+        if callback:
+            inputCombo.currentTextChanged.connect(callback)
+        return label, inputCombo
 
 
     @staticmethod
@@ -121,7 +124,8 @@ class TableView(QTableWidget):
             rows = len(list(data.values())[0])
         QTableWidget.__init__(self, rows, columns, *args)
         self.data = data
-        self.__setData()
+        if data:
+            self.__setData()
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
         copyAction = QAction("Copy\tCtrl+C", self)
         copyAction.triggered.connect(self.copyDataToClipboard)

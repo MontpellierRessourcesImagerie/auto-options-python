@@ -9,10 +9,11 @@ from autooptions.napari_util import NapariUtil
 class OptionsWidget(QWidget):
 
 
-    def __init__(self, viewer, options):
+    def __init__(self, viewer, options, client=None):
         super().__init__()
         self.setWindowTitle(options.optionsName)
         self.viewer = viewer
+        self.client = client
         self.options = options
         self.fieldWidth = 50
         self.napariUtil = NapariUtil(self.viewer)
@@ -30,6 +31,13 @@ class OptionsWidget(QWidget):
         self.viewer.layers.events.removed.connect(self._onLayerAddedOrRemoved)
         self.input_layer = None
         self.createLayout()
+
+
+    def callbackFor(self, name):
+        func = None
+        if self.client and name:
+            func = getattr(self.client, name)
+        return func
 
 
     def createLayout(self):
@@ -68,7 +76,8 @@ class OptionsWidget(QWidget):
         self.imageLayers = self.napariUtil.getImageLayers()
         label, widget = WidgetTool.getComboInput(self,
                                                  name+":",
-                                                 self.imageLayers)
+                                                 self.imageLayers,
+                                                 callback=self.callbackFor(item['callback']))
         layout.addWidget(label)
         layout.addWidget(widget)
         return layout, widget
@@ -79,7 +88,8 @@ class OptionsWidget(QWidget):
         self.fftLayers = self.napariUtil.getFFTLayers()
         label, widget = WidgetTool.getComboInput(self,
                                                  name+":",
-                                                 self.fftLayers)
+                                                 self.fftLayers,
+                                                 callback=self.callbackFor(item['callback']))
         layout.addWidget(label)
         layout.addWidget(widget)
         return layout, widget
@@ -91,7 +101,7 @@ class OptionsWidget(QWidget):
                                                 name,
                                                 item['value'],
                                                 self.fieldWidth,
-                                                item['callback'])
+                                                self.callbackFor(item['callback']))
         layout.addWidget(label)
         layout.addWidget(widget)
         return layout, widget
@@ -103,7 +113,7 @@ class OptionsWidget(QWidget):
                                                 name,
                                                 item['value'],
                                                 self.fieldWidth,
-                                                item['callback'])
+                                                self.callbackFor(item['callback']))
         layout.addWidget(label)
         layout.addWidget(widget)
         return layout, widget
@@ -115,7 +125,7 @@ class OptionsWidget(QWidget):
                                                 name,
                                                 item['value'],
                                                 self.fieldWidth,
-                                                item['callback'])
+                                                self.callbackFor(item['callback']))
         layout.addWidget(label)
         layout.addWidget(widget)
         return layout, widget
@@ -125,7 +135,8 @@ class OptionsWidget(QWidget):
         layout = QHBoxLayout()
         label, widget = WidgetTool.getComboInput(self,
                                                  name+":",
-                                                 item['choices'])
+                                                 item['choices'],
+                                                 callback=self.callbackFor(item['callback']))
         widget.setCurrentText(item['value'])
         layout.addWidget(label)
         layout.addWidget(widget)
@@ -138,7 +149,7 @@ class OptionsWidget(QWidget):
                                                 name,
                                                 item['value'],
                                                 self.fieldWidth,
-                                                item['callback'])
+                                                self.callbackFor(item['callback']))
         layout.addWidget(label)
         layout.addWidget(widget)
         return layout, widget
@@ -185,7 +196,6 @@ class OptionsWidget(QWidget):
                 item['value'] = float(widget.text().strip())
             if item['type'] == 'str':
                 item['value'] = widget.text()
-                print(item['value'])
             if item['type'] == 'bool':
                 item['value'] = widget.isChecked()
 
