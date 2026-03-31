@@ -92,14 +92,31 @@ class Options:
         return self.get(name)['value']
 
 
-    def set(self, name, value):
+    def set(self, name, option):
         """
-        Set the value of the option with the given name.
+        Set the option in options under the given name.
 
+        :param name: The name of an option
+        :param option: The new option
+        """
+        self.items[name] = option
+
+
+    def setValue(self, name, value):
+        """
+        Set the value of the option with the given name to value
         :param name: The name of an option
         :param value: The new value of the option
         """
-        self.items[name] = value
+        self.get(name)['value'] = value
+
+
+    @classmethod
+    def getCallbackName(cls, callback):
+        callbackName = None
+        if callback:
+            callbackName = callback.__name__
+        return callbackName
 
 
     def addImage(self, name='image', value=None, transient=True, position=None, callback=None):
@@ -113,78 +130,55 @@ class Options:
                          ordered). If none is given, the next free position is used.
         :param callback: The callback function, that is called when the value of the option is changed.
         """
-        position = self._getPosition(position)
-        self.items[name] = {'value': value,
-                            'type': 'image',
-                            'transient': transient,
-                            'position': position,
-                            'callback': callback}
+        self.set(name, self.getBaseOption(value, transient, position, callback) | {
+                            'type': 'image'})
 
 
     def addFFT(self, name='image', value=None, transient=True, position=None, callback=None):
-        position = self._getPosition(position)
-        self.items[name] = {'value': value,
-                            'type': 'fft',
-                            'transient': transient,
-                            'position': position,
-                            'callback': callback}
+        self.set(name, self.getBaseOption(value, transient, position, callback) | {
+                            'type': 'fft'})
 
 
     def addInt(self, name, value=1, transient=False, position=None, widget="input", callback=None):
-        position = self._getPosition(position)
-        callbackQualifiedName = None
-        if callback:
-            callbackQualifiedName = callback.__name__
-        self.items[name] = {'type': 'int',
-                            'value': value,
-                            'transient': transient,
-                            'position': position,
-                            'widget': widget,
-                            'callback': callbackQualifiedName}
+        self.set(name, self.getBaseOption(value, transient, position, callback) | {
+                            'type': 'int',
+                            'widget': widget})
 
 
     def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", callback=None):
-        position = self._getPosition(position)
-        self.items[name] = {'type': 'float',
-                            'value': value,
-                            'transient': transient,
-                            'position': position,
-                            'widget': widget,
-                            'callback': callback}
+        self.set(name, self.getBaseOption(value, transient, position, callback) | {
+                            'type': 'float',
+                            'widget': widget})
 
 
-    def addChoice(self, name="footprint", value=None, choices=None, transient=False, position=None, callback=None):
+    def addChoice(self, name, value=None, choices=None, transient=False, position=None, callback=None):
         if not choices:
             choices = []
-        self.items[name] = {
-            'name': name,
-            'value': value,
+        self.set(name, self.getBaseOption(value, transient, position, callback) | {
             'type': 'choice',
-            'choices': choices,
-            'transient': transient,
-            'position': position,
-            'callback': callback
-        }
+            'choices': choices})
 
 
     def addStr(self, name, value="", transient=False, position=None, callback=None):
-        position = self._getPosition(position)
-        self.items[name] = {'type': 'str',
-                            'value': value,
-                            'transient': transient,
-                            'position': position,
-                            'widget': "input",
-                            'callback': callback}
+        self.set(name,
+                 self.getBaseOption(value, transient, position, callback) | {
+                     'type': 'str',
+                     'widget': "input"})
 
 
     def addBool(self, name, value=False, transient=False, position=None, callback=None):
-        position = self._getPosition(position)
-        self.items[name] = {'type': 'bool',
-                            'value': value,
-                            'transient': transient,
-                            'position': position,
-                            'widget': "checkbox",
-                            'callback': callback}
+        self.set(name,
+                 self.getBaseOption(value, transient, position, callback) | {
+                     'type': 'bool',
+                     'widget': "checkbox"})
+
+
+    def getBaseOption(self, value, transient, position, callback):
+        option = {'value': value,
+                  'transient': transient,
+                  'position': self._getPosition(position),
+                  'callback': self.getCallbackName(callback)}
+        return option
 
 
     def _getPosition(self, position):

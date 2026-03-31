@@ -28,11 +28,9 @@ def handleTextChanged(text):
     COUNTER_TEXT_CHANGED = COUNTER_TEXT_CHANGED + 1
 
 
-
 def handleRemoveBackgroundChanged(value):
     global COUNTER_CHECKBOX_CHANGED
     COUNTER_CHECKBOX_CHANGED = COUNTER_CHECKBOX_CHANGED + 1
-
 
 
 def testGetLineInput(make_napari_viewer_proxy):
@@ -81,7 +79,6 @@ def testGetComboBox(make_napari_viewer_proxy):
     parent = ParentWidget()
     label, comboWidget = WidgetTool.getComboInput(parent,
                                                   "fruits",
-
                                                   ["apple", "orange", "banana"])
     assert label in parent.children()
     assert comboWidget in parent.children()
@@ -90,6 +87,7 @@ def testGetComboBox(make_napari_viewer_proxy):
     assert label.text() == "fruits"
     allItems = [comboWidget.itemText(i) for i in range(comboWidget.count())]
     assert allItems == ["apple", "orange", "banana"]
+
 
 
 

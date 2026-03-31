@@ -18,11 +18,11 @@ class Client:
     def showOptions(self):
         # Create a Qt widget, which will be our window.
         self.options = Options("Test_Auto_Options", "Median Filter")
-        self.options.addImage(name='image', value=None, transient=True)
-        self.options.addInt(name='size xy', value=3, widget="input", callback=self.onInputChanged)
-        self.options.addInt(name='size z', value=1, widget="input")
-        self.options.addChoice(name='footprint', value=None, choices=["none", "cube", "ball", "octahedron"])
-        self.options.addInt(name='radius', value=1, widget="input")
+        self.options.addImage('image', value=None, transient=True)
+        self.options.addInt('size xy', value=3, widget="input", callback=self.onInputChanged)
+        self.options.addInt('size z', value=1, widget="input")
+        self.options.addChoice('footprint', value=None, choices=["none", "cube", "ball", "octahedron"])
+        self.options.addInt('radius', value=1, widget="input")
         self.options.load()
         self.widget = OptionsWidget(self.viewer, self.options, self)
         self.viewer.window.add_dock_widget(self.widget)

@@ -10,13 +10,10 @@ class Layer:
 
 @pytest.fixture
 def layers():
-    layers = []
-    layers.append( Image(np.zeros(shape=(3, 3), dtype=np.uint8), name="toad", metadata={'fft': 'fft'}) )
-    layers.append( Image(np.zeros(shape=(3, 3), dtype=np.uint8), name="frog", scale=(1,3), units="nm") )
-    layers.append( Points(np.zeros((3, 3)), name="ant") )
-    layers.append( Labels(np.zeros(shape=(4, 4), dtype=np.uint8), name="oak") )
-    layers.append( Points(np.zeros((2, 3)), name="bee") )
-    layers.append( Image(np.zeros(shape=(3, 3), dtype=np.uint8), name="bird") )
+    layers = [Image(np.zeros(shape=(3, 3), dtype=np.uint8), name="toad", metadata={'fft': 'fft'}),
+              Image(np.zeros(shape=(3, 3), dtype=np.uint8), name="frog", scale=(1, 3), units="nm"),
+              Points(np.zeros((3, 3)), name="ant"), Labels(np.zeros(shape=(4, 4), dtype=np.uint8), name="oak"),
+              Points(np.zeros((2, 3)), name="bee"), Image(np.zeros(shape=(3, 3), dtype=np.uint8), name="bird")]
     yield layers
 
 

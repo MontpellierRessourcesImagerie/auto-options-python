@@ -42,6 +42,7 @@ dependencies = [
 testing = [
     "tox-uv",
     "pytest",  # https://docs.pytest.org/en/latest/contents.html
+    "pytest-mock",
     "pytest-cov",  # https://pytest-cov.readthedocs.io/en/latest/
     "pytest-qt",  # https://pytest-qt.readthedocs.io/en/latest/
     "napari[qt]",  # test with napari's default Qt bindings
