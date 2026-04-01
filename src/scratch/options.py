@@ -25,7 +25,10 @@ class Client:
         self.options.addInt('radius', value=1, widget="input")
         self.options.load()
         self.widget = OptionsWidget(self.viewer, self.options, self)
-        self.viewer.window.add_dock_widget(self.widget)
+        self.widget.addApplyButton(None)
+        #self.widget.addOKButton(None)
+        #self.widget.addCancelButton(None)
+        self.viewer.window.add_dock_widget(self.widget, name=self.options.optionsName)
         self.viewer.show()
         napari.run()
 

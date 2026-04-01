@@ -10,7 +10,6 @@ from autooptions.qtutil import PlotWidget
 
 
 COUNTER_TEXT_CHANGED = 0
-COUNTER_CHECKBOX_CHANGED = 0
 
 
 
@@ -26,11 +25,6 @@ class ParentWidget(QWidget):
 def handleTextChanged(text):
     global COUNTER_TEXT_CHANGED
     COUNTER_TEXT_CHANGED = COUNTER_TEXT_CHANGED + 1
-
-
-def handleRemoveBackgroundChanged(value):
-    global COUNTER_CHECKBOX_CHANGED
-    COUNTER_CHECKBOX_CHANGED = COUNTER_CHECKBOX_CHANGED + 1
 
 
 def testGetLineInput(make_napari_viewer_proxy):
@@ -74,12 +68,14 @@ def testGetLineInputNoCallback(make_napari_viewer_proxy):
     assert COUNTER_TEXT_CHANGED == counter
 
 
-def testGetComboBox(make_napari_viewer_proxy):
+def testGetComboBox(make_napari_viewer_proxy, mocker):
     make_napari_viewer_proxy()
     parent = ParentWidget()
+    callback = mocker.stub(name='onSelectedFruitChanged')
     label, comboWidget = WidgetTool.getComboInput(parent,
                                                   "fruits",
-                                                  ["apple", "orange", "banana"])
+                                                  ["apple", "orange", "banana"],
+                                                  callback=callback)
     assert label in parent.children()
     assert comboWidget in parent.children()
     assert label.parent() == parent
@@ -87,11 +83,13 @@ def testGetComboBox(make_napari_viewer_proxy):
     assert label.text() == "fruits"
     allItems = [comboWidget.itemText(i) for i in range(comboWidget.count())]
     assert allItems == ["apple", "orange", "banana"]
+    assert comboWidget.currentText() == "apple"
+    comboWidget.setCurrentText("banana")
+    assert comboWidget.currentText() == "banana"
+    callback.assert_called_once_with("banana")
 
 
-
-
-def testReplaceItemsInComboBox(make_napari_viewer_proxy):
+def testReplaceItemsInComboBox(make_napari_viewer_proxy, mocker):
     make_napari_viewer_proxy()
     parent = ParentWidget()
     label, comboWidget = WidgetTool.getComboInput(parent,
@@ -108,15 +106,15 @@ def testReplaceItemsInComboBox(make_napari_viewer_proxy):
     assert comboWidget.currentText() == "ananas"
 
 
-
-def testGetCheckBox(make_napari_viewer_proxy):
+def testGetCheckBox(make_napari_viewer_proxy, mocker):
     make_napari_viewer_proxy()
     parent = ParentWidget()
+    callback = mocker.stub(name='onRemoveBackgroundChanged')
     label, checkbox = WidgetTool.getCheckbox(parent,
                                              "remove background",
                                              True,
                                              50,
-                                             handleRemoveBackgroundChanged)
+                                             callback)
     assert label in parent.children()
     assert checkbox in parent.children()
     assert checkbox.parent() == parent
@@ -125,7 +123,7 @@ def testGetCheckBox(make_napari_viewer_proxy):
     assert checkbox.isChecked()
     assert checkbox.maximumWidth() == 50
     checkbox.setChecked(False)
-    assert COUNTER_CHECKBOX_CHANGED == 1
+    callback.assert_called_once_with(False)
     label2, checkbox2 = WidgetTool.getCheckbox(parent,
                                              "smooth",
                                              False,

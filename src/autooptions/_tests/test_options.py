@@ -49,8 +49,10 @@ class TestOptions:
 
 
     def testSaveAndLoad(self, options):
-        options.save()
+        if os.path.exists(options.optionsPath):
+            os.remove(options.optionsPath)
         oldItems = options.getItems().copy()
+        options.load()
         self.items = None
         options.load()
         assert oldItems == options.getItems()
@@ -85,8 +87,22 @@ class TestOptions:
         assert options.value("input image") == "img01"
         options.addImage('mask', value="mask", transient=True)
         assert options.value("mask") == "mask"
-        assert options.get("mask")["position"] == 1
+        assert options.get("mask")["position"] == 2
         assert options.get("mask")["type"] == "image"
+
+
+    def testAddLabels(self):
+        options = Options("Autooptions Test", "Magic Filter")
+        options.addLabels('labels', value="img01_seg", transient=True)
+        assert options.value("labels") == "img01_seg"
+        assert options.get("labels")["type"] == "labels"
+
+
+    def testAddPoints(self):
+        options = Options("Autooptions Test", "Magic Filter")
+        options.addPoints('centroids', value="centroids_layer", transient=True)
+        assert options.value("centroids") == "centroids_layer"
+        assert options.get("centroids")["type"] == "points"
 
 
     def testAddFFT(self):
@@ -144,13 +160,13 @@ class TestOptions:
         option = options.getBaseOption(7, True, None, self.onSomething)
         assert option["value"] == 7
         assert option["transient"] == True
-        assert option["position"] == 5
+        assert option["position"] == 6
         assert option["callback"] == "onSomething"
 
 
     def test_GetPosition(self, options):
         position = options._getPosition(None)
-        assert position == 5
+        assert position == 6
         position = options._getPosition(3)
         assert position == 3
 
