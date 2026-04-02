@@ -1,0 +1,46 @@
+name: Docs
+on:
+  push:
+    branches:
+      - main
+      - npe2
+    tags:
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+  pull_request:
+    branches:
+      - main
+      - npe2
+  workflow_dispatch:
+permissions:
+    contents: write
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v2.2.1
+        with:
+          python-version: 3.10
+      - name: Install dependencies
+        run: |
+          pip install "napari[all]"
+          pip install numpy magicgui qtpy pyperclip big-fish
+          pip install sphinx sphinx_rtd_theme
+      - name: Sphinx build
+        run: |
+          pip install .
+          sphinx-apidoc -T -f -e -o docs/source/ src/napari_bigfish
+          cd ./docs
+          make html
+          cd ..
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build/html
+          force_orphan: true
+
