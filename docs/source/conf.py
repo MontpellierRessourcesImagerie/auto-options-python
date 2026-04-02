@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 
 project = 'napari-autooptions'
 copyright = '2026, INSERM'
-author = ['Volker Baecker', 'Clement Benedetti']
+author = 'Volker Baecker, Clement Benedetti'
 
 # The full version, including alpha/beta/rc tags
 release = 'v0.1'
