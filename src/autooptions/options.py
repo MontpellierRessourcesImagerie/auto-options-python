@@ -45,6 +45,7 @@ class Options:
     def getItems(self):
         """
         Return the items stored in the options object.
+
         :return: A dictionary of all options in the options object.
         """
         if not self.items and self.defaultItems:
@@ -77,6 +78,7 @@ class Options:
     def get(self, name):
         """
         Answer the option with the given name.
+
         :param name: The name of an option
         :return: Answers the option with the given name as a dictionary
         """
@@ -86,6 +88,7 @@ class Options:
     def value(self, name):
         """
         Answer the value of the option with the given name.
+
         :param name: The name of an option
         :return: The value of the option with the given name. The type of the result depends on the type of the option.
         """
@@ -222,6 +225,7 @@ class Options:
     def addChoice(self, name, value=None, choices=None, transient=False, position=None, callback=None):
         """
         An option that represents a choice in a list of given values.
+
         :param name: The name of the option
         :param value: The text of the selected choice
         :param choices: A collection of possible values
@@ -258,6 +262,7 @@ class Options:
     def addBool(self, name, value=False, transient=False, position=None, callback=None):
         """
         An option that represents a binary choice.
+
         :param name: The name of the option
         :param value: The boolean value, True or False
         :param transient: Whether the option is transient. Transient options are not saved and reloaded.

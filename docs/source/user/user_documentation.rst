@@ -5,4 +5,4 @@ User Documentation
    :maxdepth: 4
 
    introduction
-
+   installation

@@ -1,7 +1,7 @@
 [project]
 name = "auto-options-python"
 dynamic = ["version"]
-description = "Mange command options in python and create QWidgets for them.."
+description = "Mange command options in python and create QWidgets for them."
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
@@ -9,7 +9,7 @@ authors = [
   {email = "volker.baecker@mri.cnrs.fr"},
 ]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "Framework :: napari",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
@@ -51,7 +51,7 @@ testing = [
 
 [project.urls]
 "Bug Tracker" = "https://github.com/MontpellierRessourcesImagerie/auto-options-python/issues"
-"Documentation" = "https://github.com/MontpellierRessourcesImagerie/auto-options-python/wiki"
+"Documentation" = "https://montpellierressourcesimagerie.github.io/auto-options-python/"
 "Source Code" = "https://github.com/MontpellierRessourcesImagerie/auto-options-python"
 "User Support" = "https://github.com/MontpellierRessourcesImagerie/auto-options-python/issues"
 
