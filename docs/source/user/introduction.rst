@@ -35,13 +35,13 @@ The code to create the options-dialog in Fig.1.1 is:
    from autooptions.options import Options
    from autooptions.widget import OptionsWidget
 
+   viewer = napari.Viewer()
    options = Options("3D Toolbox", "Convolution")
    options.addImage()
-   option.addImage(name="kernel")
+   options.addImage(name="kernel")
    options.addChoice("mode", choices=["same", "valid", "full"])
    options.addChoice("method", choices=["auto", "direct", "fft"])
    options.load()
-   widget = OptionsWidget(self.viewer, self.options, self)
+   widget = OptionsWidget(viewer, options, viewer)
    widget.addApplyButton(None)
-   viewer = napari.Viewer()
    viewer.window.add_dock_widget(widget, name=options.optionsName)
