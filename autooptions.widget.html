@@ -1,0 +1,193 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>autooptions.widget module &mdash; napari-autooptions v0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=34cd777e"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="autooptions.qtutil module" href="autooptions.qtutil.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            napari-autooptions
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="user/user_documentation.html">User Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API-Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">napari-autooptions</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API-Documentation</a></li>
+          <li class="breadcrumb-item"><a href="auto-options-python.html">autooptions package</a></li>
+      <li class="breadcrumb-item active">autooptions.widget module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/autooptions.widget.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-autooptions.widget">
+<span id="autooptions-widget-module"></span><h1>autooptions.widget module<a class="headerlink" href="#module-autooptions.widget" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="autooptions.widget.OptionsWidget">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">autooptions.widget.</span></span><span class="sig-name descname"><span class="pre">OptionsWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">viewer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/widget.py#L9-L366"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.widget.OptionsWidget" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code></p>
+<p>Automatically creates a widget from an options object. The option values can be changed in the dialog.
+When the Apply or the Ok-button is pressed the values are copied from the dialog to the options object and saved
+to the options file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.widget.OptionsWidget.addApplyButton">
+<span class="sig-name descname"><span class="pre">addApplyButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/widget.py#L50-L59"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.widget.OptionsWidget.addApplyButton" title="Link to this definition"></a></dt>
+<dd><p>Add an apply button to the options widget. When the button is pressed the value are copied from the dialog
+to the options object. The dialog remains open.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – The client can register a callback that is called when the apply button is pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.widget.OptionsWidget.addCancelButton">
+<span class="sig-name descname"><span class="pre">addCancelButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/widget.py#L74-L83"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.widget.OptionsWidget.addCancelButton" title="Link to this definition"></a></dt>
+<dd><p>Add a cancel button to the options widget. When the button is pressed the dialog is closed, the values in the
+dialog are not copied to the options object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – The client can register a callback that is called when the ok button is pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.widget.OptionsWidget.addOKButton">
+<span class="sig-name descname"><span class="pre">addOKButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/widget.py#L62-L71"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.widget.OptionsWidget.addOKButton" title="Link to this definition"></a></dt>
+<dd><p>Add an ok button to the options widget. When the button is pressed the value are copied from the dialog
+to the options object. The dialog is closed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – The client can register a callback that is called when the ok button is pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.widget.OptionsWidget.getApplyButton">
+<span class="sig-name descname"><span class="pre">getApplyButton</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/widget.py#L86-L92"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.widget.OptionsWidget.getApplyButton" title="Link to this definition"></a></dt>
+<dd><p>Answers the apply button if it exists and None otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.widget.OptionsWidget.getCancelButton">
+<span class="sig-name descname"><span class="pre">getCancelButton</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/widget.py#L104-L110"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.widget.OptionsWidget.getCancelButton" title="Link to this definition"></a></dt>
+<dd><p>Answers the cancel button if it exists and None otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.widget.OptionsWidget.getImageLayer">
+<span class="sig-name descname"><span class="pre">getImageLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/widget.py#L121-L130"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.widget.OptionsWidget.getImageLayer" title="Link to this definition"></a></dt>
+<dd><p>Answer the image layer that has the name of the value of the option with the given name. The option must be
+a layer selection option (image, labels, points, fft).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – The name of an option</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The layer that has the name corresponding to the value of the option</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.widget.OptionsWidget.getOKButton">
+<span class="sig-name descname"><span class="pre">getOKButton</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/widget.py#L95-L101"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.widget.OptionsWidget.getOKButton" title="Link to this definition"></a></dt>
+<dd><p>Answers the ok button if it exists and None otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.widget.OptionsWidget.shut">
+<span class="sig-name descname"><span class="pre">shut</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/widget.py#L113-L118"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.widget.OptionsWidget.shut" title="Link to this definition"></a></dt>
+<dd><p>Shut down the options widget. Removes the dock-widget from the window and closes the widget.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="autooptions.qtutil.html" class="btn btn-neutral float-left" title="autooptions.qtutil module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, INSERM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
