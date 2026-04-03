@@ -291,26 +291,24 @@ class OptionsWidget(QWidget):
 
 
     def _createApplyButton(self, callback):
-        button = self._createButton("&Apply", callback)
-        button.clicked.connect(self._onApplyButtonClicked)
+        button = self._createButton("&Apply", callback, self._onApplyButtonClicked)
         return button
 
 
     def _createOKButton(self, callback):
-        button = self._createButton("&Ok", callback)
-        button.clicked.connect(self._onOKButtonClicked)
+        button = self._createButton("&Ok", callback, self._onOKButtonClicked)
         return button
 
 
     def _createCancelButton(self, callback):
-        button = self._createButton("&Cancel", callback)
-        button.clicked.connect(self._onCancelButtonClicked)
+        button = self._createButton("&Cancel", callback, self._onCancelButtonClicked)
         return button
 
 
     @classmethod
-    def _createButton(cls, name, callback):
+    def _createButton(cls, name, callback, innerCallback):
         button = QPushButton(name)
+        button.clicked.connect(innerCallback)
         if callback:
             button.clicked.connect(callback)
         return button

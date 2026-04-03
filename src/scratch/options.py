@@ -4,10 +4,15 @@ from autooptions.widget import OptionsWidget
 
 class Client:
 
+
     def __init__(self):
         self.viewer = napari.Viewer()
         self.options = None
         self.widget = None
+
+
+    def onApplyButtonClicked(self):
+        print(self.options.items)
 
 
     def onInputChanged(self, value):
@@ -24,8 +29,8 @@ class Client:
         self.options.addChoice('footprint', value=None, choices=["none", "cube", "ball", "octahedron"])
         self.options.addInt('radius', value=1, widget="input")
         self.options.load()
-        self.widget = OptionsWidget(self.viewer, self.options, self)
-        self.widget.addApplyButton(None)
+        self.widget = OptionsWidget(self.viewer, self.options, self.widget)
+        self.widget.addApplyButton(self.onApplyButtonClicked)
         #self.widget.addOKButton(None)
         #self.widget.addCancelButton(None)
         self.viewer.window.add_dock_widget(self.widget, name=self.options.optionsName)
