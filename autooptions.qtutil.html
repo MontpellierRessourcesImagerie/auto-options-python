@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>autooptions.qtutil module &mdash; napari-autooptions v0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=34cd777e"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="autooptions.widget module" href="autooptions.widget.html" />
+    <link rel="prev" title="autooptions.options module" href="autooptions.options.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            napari-autooptions
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="user/user_documentation.html">User Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API-Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">napari-autooptions</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API-Documentation</a></li>
+          <li class="breadcrumb-item"><a href="auto-options-python.html">autooptions package</a></li>
+      <li class="breadcrumb-item active">autooptions.qtutil module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/autooptions.qtutil.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-autooptions.qtutil">
+<span id="autooptions-qtutil-module"></span><h1>autooptions.qtutil module<a class="headerlink" href="#module-autooptions.qtutil" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="autooptions.qtutil.PlotWidget">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">autooptions.qtutil.</span></span><span class="sig-name descname"><span class="pre">PlotWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">viewer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">napari.viewer.Viewer</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L206-L269"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.PlotWidget" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code></p>
+<p>A widget that contains a pyplot plot.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.PlotWidget.addData">
+<span class="sig-name descname"><span class="pre">addData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatString</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L242-L248"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.PlotWidget.addData" title="Link to this definition"></a></dt>
+<dd><p>Add the data and the format string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.PlotWidget.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L251-L254"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.PlotWidget.clear" title="Link to this definition"></a></dt>
+<dd><p>Remove everything from the plot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.PlotWidget.createLayout">
+<span class="sig-name descname"><span class="pre">createLayout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L232-L239"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.PlotWidget.createLayout" title="Link to this definition"></a></dt>
+<dd><p>Create the layout of the widget.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.PlotWidget.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L257-L269"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.PlotWidget.display" title="Link to this definition"></a></dt>
+<dd><p>Display the plot as a dock widget in napari.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autooptions.qtutil.TableView">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">autooptions.qtutil.</span></span><span class="sig-name descname"><span class="pre">TableView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L110-L202"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.TableView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QTableWidget</span></code></p>
+<p>A table that allows to copy the selected cells to the system-clipboard.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.TableView.copyDataToClipboard">
+<span class="sig-name descname"><span class="pre">copyDataToClipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L175-L180"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.TableView.copyDataToClipboard" title="Link to this definition"></a></dt>
+<dd><p>Copy the data in the selected table-cells into the system clipboard.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.TableView.getSelectedDataAsString">
+<span class="sig-name descname"><span class="pre">getSelectedDataAsString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L183-L202"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.TableView.getSelectedDataAsString" title="Link to this definition"></a></dt>
+<dd><p>Get the data in the selected cells as a string. Columns are
+separated by tabs and lines by newlines”.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.TableView.keyPressEvent">
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L164-L172"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.TableView.keyPressEvent" title="Link to this definition"></a></dt>
+<dd><p>Copy the selected table data to the system clipboard if the key-event
+is ctrl+C.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – The received key-pressed event.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.TableView.resetView">
+<span class="sig-name descname"><span class="pre">resetView</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L145-L148"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.TableView.resetView" title="Link to this definition"></a></dt>
+<dd><p>Resets the view to the data of the table view</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.TableView.setData">
+<span class="sig-name descname"><span class="pre">setData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L139-L142"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.TableView.setData" title="Link to this definition"></a></dt>
+<dd><p>Clear the table and replace the data in the table with the input table</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autooptions.qtutil.WidgetTool">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">autooptions.qtutil.</span></span><span class="sig-name descname"><span class="pre">WidgetTool</span></span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L17-L106"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.WidgetTool" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Utility methods for working with qt-widgets.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.WidgetTool.getCheckbox">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">getCheckbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labelText</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaultValue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldWidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L88-L106"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.WidgetTool.getCheckbox" title="Link to this definition"></a></dt>
+<dd><p>Answers a label and a checkbox checked or unchecked depeding on the default value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – The parent widget of the label and the input field</p></li>
+<li><p><strong>labelText</strong> – The text of the label</p></li>
+<li><p><strong>defaultValue</strong> – The boolean default value</p></li>
+<li><p><strong>fieldWidth</strong> – The maximum width of the checkbox</p></li>
+<li><p><strong>callback</strong> – A callback function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tupel of a label and a checkbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.WidgetTool.getComboInput">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">getComboInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labelText</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L47-L65"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.WidgetTool.getComboInput" title="Link to this definition"></a></dt>
+<dd><p>Returns a label displaying the given text and a combo-box
+with the given values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – The parent widget of the label and the input field</p></li>
+<li><p><strong>labelText</strong> – The text of the label</p></li>
+<li><p><strong>values</strong> – The values in the list of the combo-box</p></li>
+<li><p><strong>callback</strong> – A callback function that is called with the new text when the selected text changes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tupel of the label and the input field</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(QLabel, QComboBox)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.WidgetTool.getLineInput">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">getLineInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labelText</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaultValue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldWidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L22-L44"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.WidgetTool.getLineInput" title="Link to this definition"></a></dt>
+<dd><p>Returns a label displaying the given text and an input field
+with the given default value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – The parent widget of the label and the input field</p></li>
+<li><p><strong>labelText</strong> – The text of the label</p></li>
+<li><p><strong>defaultValue</strong> – The value initailly displayed in the input field</p></li>
+<li><p><strong>fieldWidth</strong> – The width of the input field</p></li>
+<li><p><strong>callback</strong> – A callback function with a parameter text. The function
+is called with the new text when the content of the
+input field changes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tupel of the label and the input field</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(QLabel, QLineEdit)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.qtutil.WidgetTool.replaceItemsInComboBox">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">replaceItemsInComboBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comboBox</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newItems</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/qtutil.py#L68-L85"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.qtutil.WidgetTool.replaceItemsInComboBox" title="Link to this definition"></a></dt>
+<dd><p>Replace the items in the combo-box with newItems</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>comboBox</strong> – The combo-box in which the items will be replaced</p></li>
+<li><p><strong>newItems</strong> – The new items that will replace the current items
+in the combo-box.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="autooptions.options.html" class="btn btn-neutral float-left" title="autooptions.options module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="autooptions.widget.html" class="btn btn-neutral float-right" title="autooptions.widget module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, INSERM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

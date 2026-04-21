@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>autooptions.options module &mdash; napari-autooptions v0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=34cd777e"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="autooptions.qtutil module" href="autooptions.qtutil.html" />
+    <link rel="prev" title="autooptions.napari_util module" href="autooptions.napari_util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            napari-autooptions
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="user/user_documentation.html">User Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API-Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">napari-autooptions</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API-Documentation</a></li>
+          <li class="breadcrumb-item"><a href="auto-options-python.html">autooptions package</a></li>
+      <li class="breadcrumb-item active">autooptions.options module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/autooptions.options.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-autooptions.options">
+<span id="autooptions-options-module"></span><h1>autooptions.options module<a class="headerlink" href="#module-autooptions.options" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="autooptions.options.Options">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">autooptions.options.</span></span><span class="sig-name descname"><span class="pre">Options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">applicationName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optionsName</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L8-L311"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Options are a list of parameters that are intended to be passed to an operation. Options have
+a name, a type and a value.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.addBool">
+<span class="sig-name descname"><span class="pre">addBool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L262-L277"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.addBool" title="Link to this definition"></a></dt>
+<dd><p>An option that represents a binary choice.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the option</p></li>
+<li><p><strong>value</strong> – The boolean value, True or False</p></li>
+<li><p><strong>transient</strong> – Whether the option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the option within the options. (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>callback</strong> – A callback function, that is called whenever the selected item is changed, whether via the gui
+or programmatically. The implementer must take care to avoid endless loops.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.addChoice">
+<span class="sig-name descname"><span class="pre">addChoice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L225-L242"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.addChoice" title="Link to this definition"></a></dt>
+<dd><p>An option that represents a choice in a list of given values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the option</p></li>
+<li><p><strong>value</strong> – The text of the selected choice</p></li>
+<li><p><strong>choices</strong> – A collection of possible values</p></li>
+<li><p><strong>transient</strong> – Whether the option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the option within the options. (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>callback</strong> – A callback function, that is called whenever the selected item is changed, whether via the gui
+or programmatically. The implementer must take care to avoid endless loops.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.addFFT">
+<span class="sig-name descname"><span class="pre">addFFT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fft'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L155-L169"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.addFFT" title="Link to this definition"></a></dt>
+<dd><p>Add an option that represents the selection of an FFT image. Image options are often transient. The FFT
+is not a standard image, since only the amplitude information is in the image, while the phase information is
+kept in the metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the option</p></li>
+<li><p><strong>value</strong> – The name of the fft layer</p></li>
+<li><p><strong>transient</strong> – Whether the fft option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the fft option within the options. (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>callback</strong> – A callback function, that is called when the selected fft layer changes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.addFloat">
+<span class="sig-name descname"><span class="pre">addFloat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'input'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L206-L222"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.addFloat" title="Link to this definition"></a></dt>
+<dd><p>An option that represents a float value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the option</p></li>
+<li><p><strong>value</strong> – The float value</p></li>
+<li><p><strong>transient</strong> – Whether the option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the option within the options. (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>widget</strong> – Currently only the input-widget, which means entering the number into an input field, is
+implemented. However, a float could also be entered in a different way, for example using
+a slider.</p></li>
+<li><p><strong>callback</strong> – A callback function, that is called when the value is changed via the graphical interface.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.addImage">
+<span class="sig-name descname"><span class="pre">addImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'image'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L125-L137"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.addImage" title="Link to this definition"></a></dt>
+<dd><p>Add an option that represents the selection of an image. Image options are often transient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the image option</p></li>
+<li><p><strong>value</strong> – The value of the image option</p></li>
+<li><p><strong>transient</strong> – Whether the image option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the image option within the options (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>callback</strong> – The callback function, that is called when the value of the option is changed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.addInt">
+<span class="sig-name descname"><span class="pre">addInt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'input'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L187-L203"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.addInt" title="Link to this definition"></a></dt>
+<dd><p>An option that represents an integer value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the option</p></li>
+<li><p><strong>value</strong> – The integer value</p></li>
+<li><p><strong>transient</strong> – Whether the option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the option within the options. (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>widget</strong> – Currently only the input-widget, which means entering the number into an input field, is
+implemented. However, an integer could also be entered in a different way, for example using
+a slider.</p></li>
+<li><p><strong>callback</strong> – A callback function, that is called when the value is changed via the graphical interface.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.addLabels">
+<span class="sig-name descname"><span class="pre">addLabels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'labels'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L140-L152"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.addLabels" title="Link to this definition"></a></dt>
+<dd><p>Add an option that represents the selection of a labels image. Labels options are often transient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the labels option</p></li>
+<li><p><strong>value</strong> – The value of the labels option</p></li>
+<li><p><strong>transient</strong> – Whether the labels option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the labels option within the options (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>callback</strong> – The callback function, that is called when the value of the option is changed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.addPoints">
+<span class="sig-name descname"><span class="pre">addPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'points'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L172-L184"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.addPoints" title="Link to this definition"></a></dt>
+<dd><p>Add an option that represents the selection of a points layer. Points options are often transient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the points option</p></li>
+<li><p><strong>value</strong> – The value of the points option</p></li>
+<li><p><strong>transient</strong> – Whether the points option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the points option within the options (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>callback</strong> – The callback function, that is called when the value of the option is changed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.addStr">
+<span class="sig-name descname"><span class="pre">addStr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L245-L259"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.addStr" title="Link to this definition"></a></dt>
+<dd><p>An option that represents a textual value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the option</p></li>
+<li><p><strong>value</strong> – The text</p></li>
+<li><p><strong>transient</strong> – Whether the option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the option within the options. (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>callback</strong> – A callback function, that is called when the value is changed via the graphical interface.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L78-L85"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.get" title="Link to this definition"></a></dt>
+<dd><p>Answer the option with the given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – The name of an option</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Answers the option with the given name as a dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.getBaseOption">
+<span class="sig-name descname"><span class="pre">getBaseOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L280-L294"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.getBaseOption" title="Link to this definition"></a></dt>
+<dd><p>A helper method to set the parts of an option that a common to all kinds of options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – The value of the option</p></li>
+<li><p><strong>transient</strong> – Whether the option is transient. Transient options are not saved and reloaded.</p></li>
+<li><p><strong>position</strong> – The position of the option within the options. (Could be used when dictionaries are not
+ordered). If none is given, the next free position is used.</p></li>
+<li><p><strong>callback</strong> – A callback function, that is called when the value of the option changes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.getCallbackName">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">getCallbackName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L117-L122"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.getCallbackName" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.getItems">
+<span class="sig-name descname"><span class="pre">getItems</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L45-L53"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.getItems" title="Link to this definition"></a></dt>
+<dd><p>Return the items stored in the options object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary of all options in the options object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L64-L75"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.load" title="Link to this definition"></a></dt>
+<dd><p>Load the options as a JSON file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L56-L61"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.save" title="Link to this definition"></a></dt>
+<dd><p>Save the options as a JSON file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L98-L105"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.set" title="Link to this definition"></a></dt>
+<dd><p>Set the option in options under the given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of an option</p></li>
+<li><p><strong>option</strong> – The new option</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.setDefaultValues">
+<span class="sig-name descname"><span class="pre">setDefaultValues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">defaultItems</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L35-L42"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.setDefaultValues" title="Link to this definition"></a></dt>
+<dd><p>Set the default values for all options in the options object. Currently unused. The idea is that it might be
+useful to have default values, other than in the code, to which the option can be reset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>defaultItems</strong> – A dictionary of default values for all options in the options object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.setValue">
+<span class="sig-name descname"><span class="pre">setValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L108-L114"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.setValue" title="Link to this definition"></a></dt>
+<dd><p>Set the value of the option with the given name to value
+:param name: The name of an option
+:param value: The new value of the option</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autooptions.options.Options.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/MontpellierRessourcesImagerie/auto-options-python/blob/main/src/autooptions/options.py#L88-L95"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autooptions.options.Options.value" title="Link to this definition"></a></dt>
+<dd><p>Answer the value of the option with the given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – The name of an option</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value of the option with the given name. The type of the result depends on the type of the option.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="autooptions.napari_util.html" class="btn btn-neutral float-left" title="autooptions.napari_util module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="autooptions.qtutil.html" class="btn btn-neutral float-right" title="autooptions.qtutil module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, INSERM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

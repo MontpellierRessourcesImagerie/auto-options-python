@@ -1,0 +1,7 @@
+autooptions.options module
+==========================
+
+.. automodule:: autooptions.options
+   :members:
+   :show-inheritance:
+   :undoc-members:
