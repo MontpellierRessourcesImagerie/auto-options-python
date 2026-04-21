@@ -13,7 +13,7 @@ class OptionsWidget(QWidget):
     to the options file.
     """
 
-    def __init__(self, viewer, options, client=None):
+    def __init__(self, viewer, options, client=None, sameRowMap=None):
         """
         Create a new options widget. Layer add and remove events are caught and
         the combo-boxes are updated accordingly, depending on the layer types.
@@ -41,6 +41,7 @@ class OptionsWidget(QWidget):
         self.labelComboBoxes = []
         self.pointComboBoxes = []
         self.widgets = {}
+        self._isSameRow = sameRowMap
         self.viewer.layers.events.inserted.connect(self._onLayerAddedOrRemoved)
         self.viewer.layers.events.removed.connect(self._onLayerAddedOrRemoved)
         self.input_layer = None
@@ -137,42 +138,55 @@ class OptionsWidget(QWidget):
         return func
 
 
+    def sameRow(self, name):
+        if self._isSameRow is None:
+            self._isSameRow = {}
+        self._isSameRow[name] = True
+
+
+    def isSameRow(self, name):
+        if self._isSameRow is None:
+            return False
+        if name in self._isSameRow.keys():
+            return self._isSameRow[name]
+        return False
+
+
     def _createLayout(self):
         self.mainLayout = QVBoxLayout()
+        layout = None
+        lastLayout = None
         for name, item in self.options.items.items():
             widget = None
             if item['type'] == 'image':
                 layout, widget = self._getImageWidget(name, item)
-                self.mainLayout.addLayout(layout)
                 self.imageComboBoxes.append(widget)
             if item['type'] == 'labels':
                 layout, widget = self._getLabelsWidget(name, item)
-                self.mainLayout.addLayout(layout)
                 self.labelComboBoxes.append(widget)
             if item['type'] == 'points':
                 layout, widget = self._getPointsWidget(name, item)
-                self.mainLayout.addLayout(layout)
                 self.pointComboBoxes.append(widget)
             if item['type'] == 'fft':
                 layout, widget = self._getFFTWidget(name, item)
-                self.mainLayout.addLayout(layout)
                 self.fftComboBoxes.append(widget)
             if item['type'] == 'int':
                 layout, widget = self._getIntWidget(name, item)
-                self.mainLayout.addLayout(layout)
             if item['type'] == 'float':
                 layout, widget = self._getFloatWidget(name, item)
-                self.mainLayout.addLayout(layout)
             if item['type'] == 'choice':
                 layout, widget = self._getChoiceWidget(name, item)
-                self.mainLayout.addLayout(layout)
             if item['type'] == 'str':
                 layout, widget = self._getStrWidget(name, item)
-                self.mainLayout.addLayout(layout)
             if item['type'] == 'bool':
                 layout, widget = self._getBoolWidget(name, item)
+            if self.isSameRow(name):
+                lastLayout.addWidget(layout.itemAt(0).widget())
+                lastLayout.addWidget(layout.itemAt(1).widget())
+            else:
                 self.mainLayout.addLayout(layout)
             self.widgets[name] = widget
+            lastLayout = layout
         self.setLayout(self.mainLayout)
 
 
