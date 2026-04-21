@@ -1,6 +1,13 @@
-from qtpy.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton
+from qtpy.QtWidgets import (
+    QVBoxLayout, 
+    QHBoxLayout, 
+    QPushButton,
+    QGridLayout,
+    QWidget,
+    QLabel
+)
+from qtpy.QtGui import QColor
 from napari.utils.events import Event
-from qtpy.QtWidgets import QWidget
 from autooptions.qtutil import WidgetTool
 from autooptions.napari_util import NapariUtil
 
@@ -34,6 +41,7 @@ class OptionsWidget(QWidget):
         self.labelLayers = self.napariUtil.getLabelLayers()
         self.pointLayers = self.napariUtil.getPointsLayers()
         self.mainLayout = None
+        self.gridLayout = None
         self.buttonsLayout = None
         self.buttons = {}
         self.imageComboBoxes = []
@@ -135,185 +143,279 @@ class OptionsWidget(QWidget):
         if self.client and name:
             func = getattr(self.client, name)
         return func
+    
+
+    def _makeMainLayout(self):
+        grid = QGridLayout()
+        main = QVBoxLayout()
+        main.addLayout(grid)
+        return main, grid
+    
+
+    def _addLineToLayout(self, optionalWidget=None, nameWidget=None, valueWidget=None, extraWidget=None):
+        grid = self.gridLayout
+        rowIndex = len(self.widgets)
+    
+        if optionalWidget is not None:
+            grid.addWidget(optionalWidget, rowIndex, 0)
+            optionalWidget.setParent(self)
+        else:
+            grid.addWidget(QLabel(f""), rowIndex, 0)
+        
+        if nameWidget is not None:
+            grid.addWidget(nameWidget, rowIndex, 1)
+            nameWidget.setParent(self)
+        else:
+            grid.addWidget(QLabel(f""), rowIndex, 1)
+        
+        if valueWidget is not None:
+            grid.addWidget(valueWidget, rowIndex, 2)
+            valueWidget.setParent(self)
+        else:
+            grid.addWidget(QLabel(f""), rowIndex, 2)
+        
+        if extraWidget is not None:
+            grid.addWidget(extraWidget, rowIndex, 3)
+            extraWidget.setParent(self)
+        else:
+            grid.addWidget(QLabel(f""), rowIndex, 3)
+
 
 
     def _createLayout(self):
-        self.mainLayout = QVBoxLayout()
+        self.mainLayout, self.gridLayout = self._makeMainLayout()
         for name, item in self.options.items.items():
             widget = None
             if item['type'] == 'image':
-                layout, widget = self._getImageWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getImageWidget(name, item)
                 self.imageComboBoxes.append(widget)
             if item['type'] == 'labels':
-                layout, widget = self._getLabelsWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getLabelsWidget(name, item)
                 self.labelComboBoxes.append(widget)
             if item['type'] == 'points':
-                layout, widget = self._getPointsWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getPointsWidget(name, item)
                 self.pointComboBoxes.append(widget)
             if item['type'] == 'fft':
-                layout, widget = self._getFFTWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getFFTWidget(name, item)
                 self.fftComboBoxes.append(widget)
             if item['type'] == 'int':
-                layout, widget = self._getIntWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getIntWidget(name, item)
             if item['type'] == 'float':
-                layout, widget = self._getFloatWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getFloatWidget(name, item)
             if item['type'] == 'choice':
-                layout, widget = self._getChoiceWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getChoiceWidget(name, item)
             if item['type'] == 'str':
-                layout, widget = self._getStrWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getStrWidget(name, item)
             if item['type'] == 'bool':
-                layout, widget = self._getBoolWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getBoolWidget(name, item)
             if item['type'] == 'folder':
-                layout, widget = self._getFolderWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getFolderWidget(name, item)
             if item['type'] == 'file':
-                layout, widget = self._getFileWidget(name, item)
-                self.mainLayout.addLayout(layout)
+                widget = self._getFileWidget(name, item)
             self.widgets[name] = widget
         self.setLayout(self.mainLayout)
 
     
     def _getFolderWidget(self, name, item):
-        layout = QHBoxLayout()
-        label, widget, btn = WidgetTool.getFolderInput(self,
-                                                 name +":",
-                                                 item['value'],
-                                                 self.fieldWidth,
-                                                 self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        layout.addWidget(btn)
-        return layout, widget
+        label, widget, btn, active = WidgetTool.getFolderInput(
+                                                    f"{name}:",
+                                                    item['value'],
+                                                    self.fieldWidth,
+                                                    callback=self._callbackFor(item['callback']),
+                                                    optional=(item['optional'], item['active'])
+                                                )
+
+        self._addLineToLayout(
+            optionalWidget=active, 
+            nameWidget=label, 
+            valueWidget=widget, 
+            extraWidget=btn
+        )
+        
+        return widget
     
 
     def _getFileWidget(self, name, item):
-        layout = QHBoxLayout()
-        label, widget, btn = WidgetTool.getFileInput(self,
-                                                 name +":",
-                                                 item['value'],
-                                                 self.fieldWidth,
-                                                 self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        layout.addWidget(btn)
-        return layout, widget
+        label, widget, btn, active = WidgetTool.getFileInput(
+                                                    f"{name}:",
+                                                    item['value'],
+                                                    self.fieldWidth,
+                                                    callback=self._callbackFor(item['callback']),
+                                                    optional=(item['optional'], item['active'])
+                                                )
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget,
+            extraWidget=btn
+        )
+
+        return widget
 
 
     def _getImageWidget(self, name, item):
-        layout = QHBoxLayout()
         self.imageLayers = self.napariUtil.getImageLayers()
-        label, widget = WidgetTool.getComboInput(self,
-                                                 name +":",
-                                                 self.imageLayers,
-                                                 callback=self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        return layout, widget
+        label, widget, active = WidgetTool.getComboInput(
+                                                    f"{name}:",
+                                                    self.imageLayers,
+                                                    callback=self._callbackFor(item['callback']),
+                                                    optional=(item['optional'], item['active'])
+                                                )
+        # widget.setMinimumWidth(self.fieldWidth)
+
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget
+        )
+
+        return widget
 
 
     def _getLabelsWidget(self, name, item):
-        layout = QHBoxLayout()
         self.labelLayers = self.napariUtil.getLabelLayers()
-        label, widget = WidgetTool.getComboInput(self,
-                                                 name +":",
-                                                 self.labelLayers,
-                                                 callback=self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        return layout, widget
+        label, widget, active = WidgetTool.getComboInput(
+                                                    f"{name}:",
+                                                    self.labelLayers,
+                                                    callback=self._callbackFor(item['callback']),
+                                                    optional=(item['optional'], item['active'])
+                                                )
+        widget.setMinimumWidth(self.fieldWidth)
+        
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget
+        )
+
+        return widget
 
 
     def _getPointsWidget(self, name, item):
-        layout = QHBoxLayout()
         self.pointsLayers = self.napariUtil.getPointsLayers()
-        label, widget = WidgetTool.getComboInput(self,
-                                                 name +":",
-                                                 self.pointsLayers,
-                                                 callback=self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        return layout, widget
+        label, widget, active = WidgetTool.getComboInput(
+                                                    f"{name}:",
+                                                    self.pointsLayers,
+                                                    callback=self._callbackFor(item['callback']),
+                                                    optional=(item['optional'], item['active'])
+                                                )
+        widget.setMinimumWidth(self.fieldWidth)
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget
+        )
+
+        return widget
 
 
     def _getFFTWidget(self, name, item):
-        layout = QHBoxLayout()
         self.fftLayers = self.napariUtil.getFFTLayers()
-        label, widget = WidgetTool.getComboInput(self,
-                                                 name +":",
-                                                 self.fftLayers,
-                                                 callback=self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        return layout, widget
+        label, widget, active = WidgetTool.getComboInput(
+                                                    f"{name}:",
+                                                    self.fftLayers,
+                                                    callback=self._callbackFor(item['callback']),
+                                                    optional=(item['optional'], item['active'])
+                                                )
+        widget.setMinimumWidth(self.fieldWidth)
+        
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget
+        )
+
+        return widget
 
 
     def _getIntWidget(self, name, item):
-        layout = QHBoxLayout()
-        label, widget = WidgetTool.getLineInput(self,
-                                                name +":",
+        label, widget, active = WidgetTool.getLineInput(
+                                                f"{name}:",
                                                 item['value'],
                                                 self.fieldWidth,
-                                                self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        return layout, widget
+                                                callback=self._callbackFor(item['callback']),
+                                                optional=(item['optional'], item['active'])
+                                            )
+        
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget
+        )
+
+        return widget
 
 
     def _getFloatWidget(self, name, item):
-        layout = QHBoxLayout()
-        label, widget = WidgetTool.getLineInput(self,
-                                                name +":",
+        label, widget, active = WidgetTool.getLineInput(
+                                                f"{name}:",
                                                 item['value'],
                                                 self.fieldWidth,
-                                                self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        return layout, widget
+                                                callback=self._callbackFor(item['callback']),
+                                                optional=(item['optional'], item['active'])
+                                            )
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget
+        )
+
+        return widget
 
 
     def _getStrWidget(self, name, item):
-        layout = QHBoxLayout()
-        label, widget = WidgetTool.getLineInput(self,
-                                                name +":",
+        label, widget, active = WidgetTool.getLineInput(
+                                                f"{name}:",
                                                 item['value'],
                                                 self.fieldWidth,
-                                                self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        return layout, widget
+                                                callback=self._callbackFor(item['callback']),
+                                                optional=(item['optional'], item['active'])
+                                            )
+        
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget
+        )
+
+        return widget
 
 
     def _getChoiceWidget(self, name, item):
-        layout = QHBoxLayout()
-        label, widget = WidgetTool.getComboInput(self,
-                                                 name +":",
+        label, widget, active = WidgetTool.getComboInput(
+                                                 f"{name}:",
                                                  item['choices'],
-                                                 callback=self._callbackFor(item['callback']))
+                                                 callback=self._callbackFor(item['callback']),
+                                                 optional=(item['optional'], item['active'])
+                                             )
+        widget.setMinimumWidth(self.fieldWidth)
         widget.setCurrentText(item['value'])
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        return layout, widget
+        
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget
+        )
+
+        return widget
 
 
     def _getBoolWidget(self, name, item):
-        layout = QHBoxLayout()
-        label, widget = WidgetTool.getCheckbox(self,
-                                               name,
+        label, widget, active = WidgetTool.getCheckbox(
+                                               f"{name}",
                                                item['value'],
                                                self.fieldWidth,
-                                               self._callbackFor(item['callback']))
-        layout.addWidget(label)
-        layout.addWidget(widget)
-        return layout, widget
+                                               callback=self._callbackFor(item['callback']),
+                                               optional=(item['optional'], item['active'])
+                                           )
+        
+        self._addLineToLayout(
+            optionalWidget=active,
+            nameWidget=label,
+            valueWidget=widget
+        )
+
+        return widget
 
     def _getButtonsLayout(self):
         if not self.buttonsLayout:
@@ -380,6 +482,7 @@ class OptionsWidget(QWidget):
                 item['value'] = widget.isChecked()
             if item['type'] == 'folder' or item['type'] == 'file':
                 item['value'] = widget.text()
+            item['active'] = widget.isEnabled()
 
 
     def _onLayerAddedOrRemoved(self, event: Event):

@@ -13,7 +13,8 @@ from qtpy.QtWidgets import (
     QTableWidgetItem, 
     QAction,
     QFileDialog,
-    QPushButton
+    QPushButton,
+    QSizePolicy
 )
 from qtpy.QtCore import Qt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -25,14 +26,33 @@ if TYPE_CHECKING:
     import napari
 
 
-
 class WidgetTool:
     """
     Utility methods for working with qt-widgets.
     """
 
     @staticmethod
-    def getLineInput(parent, labelText, defaultValue, fieldWidth, callback):
+    def activateWidgetFactory(widget):
+        def activateWidget(state):
+            widget.setEnabled(state == 2)
+        return activateWidget
+
+    @staticmethod
+    def makeActivable(widgets, optional):
+        isOptional, isActive = optional
+        if not isOptional:
+            return None
+        checkbox = QCheckBox()
+        checkbox.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        checkbox.setChecked(isActive)
+        for widget in widgets:
+            checkbox.stateChanged.connect(WidgetTool.activateWidgetFactory(widget))
+            if not isActive:
+                widget.setEnabled(False)
+        return checkbox
+
+    @staticmethod
+    def getLineInput(labelText, defaultValue, fieldWidth, callback=None, optional=(False, True)):
         """Returns a label displaying the given text and an input field
         with the given default value.
 
@@ -46,18 +66,21 @@ class WidgetTool:
         :return: A tupel of the label and the input field
         :rtype: (QLabel, QLineEdit)
         """
-        label = QLabel(parent)
+        label = QLabel()
         label.setText(labelText)
-        inputWidget = QLineEdit(parent)
+        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        inputWidget = QLineEdit()
         inputWidget.setText(str(defaultValue))
         if callback:
             inputWidget.textEdited.connect(callback)
-        inputWidget.setMaximumWidth(fieldWidth)
-        return label, inputWidget
+        inputWidget.setMinimumWidth(fieldWidth)
+        inputWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        cb_used = WidgetTool.makeActivable([label, inputWidget], optional)
+        return label, inputWidget, cb_used
     
 
     @staticmethod
-    def getFolderInput(parent, labelText, defaultValue, fieldWidth, callback):
+    def getFolderInput(labelText, defaultValue, fieldWidth, callback=None, optional=(False, True)):
         """Returns a label displaying the given text and an input field
         with the given default value.
 
@@ -71,25 +94,29 @@ class WidgetTool:
         :return: A tupel of the label and the input field
         :rtype: (QLabel, QLineEdit)
         """
-        label = QLabel(parent)
+        label = QLabel()
         label.setText(labelText)
-        inputWidget = QLineEdit(parent)
+        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        inputWidget = QLineEdit()
         inputWidget.setText(str(defaultValue))
         if callback:
             inputWidget.textEdited.connect(callback)
-        inputWidget.setMaximumWidth(fieldWidth)
-        button = QPushButton("Browse", parent)
+        inputWidget.setMinimumWidth(fieldWidth)
+        inputWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        button = QPushButton("...")
+        button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         def browseFolder():
-            folder = QFileDialog.getExistingDirectory(parent, "Select Folder")
+            folder = QFileDialog.getExistingDirectory(None, "Select Folder")
             if folder:
                 inputWidget.setText(folder)
                 if callback:
                     callback(folder)
         button.clicked.connect(browseFolder)
-        return label, inputWidget, button
+        cb_used = WidgetTool.makeActivable([label, inputWidget, button], optional)
+        return label, inputWidget, button, cb_used
     
 
-    def getFileInput(parent, labelText, defaultValue, fieldWidth, callback):
+    def getFileInput(labelText, defaultValue, fieldWidth, callback=None, optional=(False, True)):
         """Returns a label displaying the given text and an input field
         with the given default value.
 
@@ -103,26 +130,30 @@ class WidgetTool:
         :return: A tupel of the label and the input field
         :rtype: (QLabel, QLineEdit)
         """
-        label = QLabel(parent)
+        label = QLabel()
         label.setText(labelText)
-        inputWidget = QLineEdit(parent)
+        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        inputWidget = QLineEdit()
         inputWidget.setText(str(defaultValue))
         if callback:
             inputWidget.textEdited.connect(callback)
-        inputWidget.setMaximumWidth(fieldWidth)
-        button = QPushButton("Browse", parent)
+        inputWidget.setMinimumWidth(fieldWidth)
+        inputWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        button = QPushButton("...")
+        button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         def browseFile():
-            file, _ = QFileDialog.getOpenFileName(parent, "Select File")
+            file, _ = QFileDialog.getOpenFileName(None, "Select File")
             if file:
                 inputWidget.setText(file)
                 if callback:
                     callback(file)
         button.clicked.connect(browseFile)
-        return label, inputWidget, button
+        cb_used = WidgetTool.makeActivable([label, inputWidget, button], optional)
+        return label, inputWidget, button, cb_used
 
 
     @staticmethod
-    def getComboInput(parent, labelText, values, callback=None):
+    def getComboInput(labelText, values, callback=None, optional=(False, True)):
         """Returns a label displaying the given text and a combo-box
         with the given values.
 
@@ -133,13 +164,16 @@ class WidgetTool:
         :return: A tupel of the label and the input field
         :rtype: (QLabel, QComboBox)
         """
-        label = QLabel(parent)
+        label = QLabel()
         label.setText(labelText)
-        inputCombo = QComboBox(parent)
+        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        inputCombo = QComboBox()
         inputCombo.addItems(values)
+        inputCombo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         if callback:
             inputCombo.currentTextChanged.connect(callback)
-        return label, inputCombo
+        cb_used = WidgetTool.makeActivable([label, inputCombo], optional)
+        return label, inputCombo, cb_used
 
 
     @staticmethod
@@ -163,7 +197,7 @@ class WidgetTool:
 
 
     @staticmethod
-    def getCheckbox(parent, labelText, defaultValue, fieldWidth, callback):
+    def getCheckbox(labelText, defaultValue, fieldWidth, callback=None, optional=(False, True)):
         """Answers a label and a checkbox checked or unchecked depeding on the default value.
 
         :param parent: The parent widget of the label and the input field
@@ -173,14 +207,17 @@ class WidgetTool:
         :param callback: A callback function
         :return: A tupel of a label and a checkbox
         """
-        label = QLabel(parent)
+        label = QLabel()
         label.setText(labelText)
-        cb = QCheckBox(parent)
+        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        cb = QCheckBox()
         cb.setChecked(defaultValue)
         if callback:
             cb.stateChanged.connect(callback)
         cb.setMaximumWidth(fieldWidth)
-        return label, cb
+        cb.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        cb_used = WidgetTool.makeActivable([label, cb], optional)
+        return label, cb, cb_used
 
 
 

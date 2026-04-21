@@ -92,7 +92,20 @@ class Options:
         :param name: The name of an option
         :return: The value of the option with the given name. The type of the result depends on the type of the option.
         """
+        if self.get(name)['optional'] and not self.get(name)['active']:
+            return None
         return self.get(name)['value']
+    
+
+    def isActive(self, name):
+        """
+        Answer whether the option with the given name is active. An option is active if it is not optional or if it is
+        optional and has a value that is not None.
+
+        :param name: The name of an option
+        :return: True if the option with the given name is active and False otherwise.
+        """
+        return not self.get(name)['optional'] or self.get(name)['active']
 
 
     def set(self, name, option):
@@ -111,6 +124,8 @@ class Options:
         :param name: The name of an option
         :param value: The new value of the option
         """
+        if self.get(name)['optional'] and not self.get(name)['active']:
+            return
         self.get(name)['value'] = value
 
 
@@ -317,11 +332,21 @@ class Options:
                          ordered). If none is given, the next free position is used.
         :param callback: A callback function, that is called when the value of the option changes.
         """
+        if type(optional) == bool:
+            optional = optional
+            active = True
+        elif type(optional) == tuple and len(optional) == 2:
+            optional, active = optional
+        else:
+            raise ValueError("optional must be either a boolean or a tuple of two booleans")
+        
         option = {'value': value,
                   'transient': transient,
-                  'position': self._getPosition(position),
-                  'callback': self.getCallbackName(callback),
-                  'optional': optional}
+                  'position' : self._getPosition(position),
+                  'callback' : self.getCallbackName(callback),
+                  'optional' : optional,
+                  'active'   : active
+                }
         return option
 
 
