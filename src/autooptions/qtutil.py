@@ -1,14 +1,26 @@
-from typing import TYPE_CHECKING
 import pyperclip
 import numpy as np
 import matplotlib.pyplot as plt
-from qtpy.QtWidgets import QHBoxLayout, QCheckBox
+from qtpy.QtWidgets import (
+    QHBoxLayout, 
+    QCheckBox, 
+    QWidget, 
+    QVBoxLayout, 
+    QLabel, 
+    QLineEdit, 
+    QComboBox, 
+    QTableWidget, 
+    QTableWidgetItem, 
+    QAction,
+    QFileDialog,
+    QPushButton
+)
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
-from qtpy.QtWidgets import QLabel, QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QAction
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from napari.utils import notifications
 from autooptions.array_util import ArrayUtil
+
+from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     import napari
 
@@ -42,6 +54,71 @@ class WidgetTool:
             inputWidget.textEdited.connect(callback)
         inputWidget.setMaximumWidth(fieldWidth)
         return label, inputWidget
+    
+
+    @staticmethod
+    def getFolderInput(parent, labelText, defaultValue, fieldWidth, callback):
+        """Returns a label displaying the given text and an input field
+        with the given default value.
+
+        :param parent: The parent widget of the label and the input field
+        :param labelText: The text of the label
+        :param defaultValue: The value initailly displayed in the input field
+        :param fieldWidth: The width of the input field
+        :param callback: A callback function with a parameter text. The function
+                         is called with the new text when the content of the
+                         input field changes
+        :return: A tupel of the label and the input field
+        :rtype: (QLabel, QLineEdit)
+        """
+        label = QLabel(parent)
+        label.setText(labelText)
+        inputWidget = QLineEdit(parent)
+        inputWidget.setText(str(defaultValue))
+        if callback:
+            inputWidget.textEdited.connect(callback)
+        inputWidget.setMaximumWidth(fieldWidth)
+        button = QPushButton("Browse", parent)
+        def browseFolder():
+            folder = QFileDialog.getExistingDirectory(parent, "Select Folder")
+            if folder:
+                inputWidget.setText(folder)
+                if callback:
+                    callback(folder)
+        button.clicked.connect(browseFolder)
+        return label, inputWidget, button
+    
+
+    def getFileInput(parent, labelText, defaultValue, fieldWidth, callback):
+        """Returns a label displaying the given text and an input field
+        with the given default value.
+
+        :param parent: The parent widget of the label and the input field
+        :param labelText: The text of the label
+        :param defaultValue: The value initailly displayed in the input field
+        :param fieldWidth: The width of the input field
+        :param callback: A callback function with a parameter text. The function
+                         is called with the new text when the content of the
+                         input field changes
+        :return: A tupel of the label and the input field
+        :rtype: (QLabel, QLineEdit)
+        """
+        label = QLabel(parent)
+        label.setText(labelText)
+        inputWidget = QLineEdit(parent)
+        inputWidget.setText(str(defaultValue))
+        if callback:
+            inputWidget.textEdited.connect(callback)
+        inputWidget.setMaximumWidth(fieldWidth)
+        button = QPushButton("Browse", parent)
+        def browseFile():
+            file, _ = QFileDialog.getOpenFileName(parent, "Select File")
+            if file:
+                inputWidget.setText(file)
+                if callback:
+                    callback(file)
+        button.clicked.connect(browseFile)
+        return label, inputWidget, button
 
 
     @staticmethod

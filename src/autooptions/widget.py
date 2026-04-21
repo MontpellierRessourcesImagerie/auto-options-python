@@ -27,7 +27,7 @@ class OptionsWidget(QWidget):
         self.viewer = viewer
         self.client = client
         self.options = options
-        self.fieldWidth = 50
+        self.fieldWidth = 150
         self.napariUtil = NapariUtil(self.viewer)
         self.imageLayers = self.napariUtil.getImageLayers()
         self.fftLayers = self.napariUtil.getFFTLayers()
@@ -67,7 +67,7 @@ class OptionsWidget(QWidget):
         :param callback: The client can register a callback that is called when the ok button is pressed
         """
         button = self._createOKButton(callback)
-        self.buttons['Ok'] = button
+        self.buttons['OK'] = button
         self._getButtonsLayout().addWidget(button)
 
 
@@ -76,7 +76,7 @@ class OptionsWidget(QWidget):
         Add a cancel button to the options widget. When the button is pressed the dialog is closed, the values in the
         dialog are not copied to the options object.
 
-        :param callback: The client can register a callback that is called when the ok button is pressed
+        :param callback: The client can register a callback that is called when the cancel button is pressed
         """
         button = self._createCancelButton(callback)
         self.buttons['Cancel'] = button
@@ -172,8 +172,40 @@ class OptionsWidget(QWidget):
             if item['type'] == 'bool':
                 layout, widget = self._getBoolWidget(name, item)
                 self.mainLayout.addLayout(layout)
+            if item['type'] == 'folder':
+                layout, widget = self._getFolderWidget(name, item)
+                self.mainLayout.addLayout(layout)
+            if item['type'] == 'file':
+                layout, widget = self._getFileWidget(name, item)
+                self.mainLayout.addLayout(layout)
             self.widgets[name] = widget
         self.setLayout(self.mainLayout)
+
+    
+    def _getFolderWidget(self, name, item):
+        layout = QHBoxLayout()
+        label, widget, btn = WidgetTool.getFolderInput(self,
+                                                 name +":",
+                                                 item['value'],
+                                                 self.fieldWidth,
+                                                 self._callbackFor(item['callback']))
+        layout.addWidget(label)
+        layout.addWidget(widget)
+        layout.addWidget(btn)
+        return layout, widget
+    
+
+    def _getFileWidget(self, name, item):
+        layout = QHBoxLayout()
+        label, widget, btn = WidgetTool.getFileInput(self,
+                                                 name +":",
+                                                 item['value'],
+                                                 self.fieldWidth,
+                                                 self._callbackFor(item['callback']))
+        layout.addWidget(label)
+        layout.addWidget(widget)
+        layout.addWidget(btn)
+        return layout, widget
 
 
     def _getImageWidget(self, name, item):
@@ -286,6 +318,7 @@ class OptionsWidget(QWidget):
     def _getButtonsLayout(self):
         if not self.buttonsLayout:
             self.buttonsLayout = QHBoxLayout()
+            self.mainLayout.addSpacing(15)
             self.mainLayout.addLayout(self.buttonsLayout)
         return self.buttonsLayout
 
@@ -345,6 +378,8 @@ class OptionsWidget(QWidget):
                 item['value'] = widget.text()
             if item['type'] == 'bool':
                 item['value'] = widget.isChecked()
+            if item['type'] == 'folder' or item['type'] == 'file':
+                item['value'] = widget.text()
 
 
     def _onLayerAddedOrRemoved(self, event: Event):
