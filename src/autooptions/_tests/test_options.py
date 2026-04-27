@@ -157,7 +157,7 @@ class TestOptions:
 
 
     def testGetBaseOption(self, options):
-        option = options.getBaseOption(7, True, None, self.onSomething)
+        option = options._getBaseOption(7, True, None, self.onSomething)
         assert option["value"] == 7
         assert option["transient"] == True
         assert option["position"] == 6

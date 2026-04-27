@@ -16,7 +16,7 @@ from autooptions.napari_util import NapariUtil
 class OptionsWidget(QWidget):
     """
     Automatically creates a widget from an options object. The option values can be changed in the dialog.
-    When the Apply or the Ok-button is pressed the values are copied from the dialog to the options object and saved
+    When the 'Apply' or the 'OK' button is pressed the values are copied from the dialog to the options object and saved
     to the options file.
     """
 
@@ -34,7 +34,6 @@ class OptionsWidget(QWidget):
         self.viewer = viewer
         self.client = client
         self.options = options
-        self.fieldWidth = 150
         self.napariUtil = NapariUtil(self.viewer)
         self.imageLayers = self.napariUtil.getImageLayers()
         self.fftLayers = self.napariUtil.getFFTLayers()
@@ -51,7 +50,6 @@ class OptionsWidget(QWidget):
         self.widgets = {}
         self.viewer.layers.events.inserted.connect(self._onLayerAddedOrRemoved)
         self.viewer.layers.events.removed.connect(self._onLayerAddedOrRemoved)
-        self.input_layer = None
         self._createLayout()
 
 
@@ -134,8 +132,8 @@ class OptionsWidget(QWidget):
         :param name: The name of an option
         :return: The layer that has the name corresponding to the value of the option
         """
-        layer = self.napariUtil.getLayerWithName(self.options.get(name)['value'])
-        return layer
+        opt = self.options.get(name)
+        return None if opt is None else self.napariUtil.getLayerWithName(opt['value'])
 
 
     def _callbackFor(self, name):
@@ -155,31 +153,14 @@ class OptionsWidget(QWidget):
     def _addLineToLayout(self, optionalWidget=None, nameWidget=None, valueWidget=None, extraWidget=None):
         grid = self.gridLayout
         rowIndex = len(self.widgets)
-    
-        if optionalWidget is not None:
-            grid.addWidget(optionalWidget, rowIndex, 0)
-            optionalWidget.setParent(self)
-        else:
-            grid.addWidget(QLabel(f""), rowIndex, 0)
-        
-        if nameWidget is not None:
-            grid.addWidget(nameWidget, rowIndex, 1)
-            nameWidget.setParent(self)
-        else:
-            grid.addWidget(QLabel(f""), rowIndex, 1)
-        
-        if valueWidget is not None:
-            grid.addWidget(valueWidget, rowIndex, 2)
-            valueWidget.setParent(self)
-        else:
-            grid.addWidget(QLabel(f""), rowIndex, 2)
-        
-        if extraWidget is not None:
-            grid.addWidget(extraWidget, rowIndex, 3)
-            extraWidget.setParent(self)
-        else:
-            grid.addWidget(QLabel(f""), rowIndex, 3)
+        items = [optionalWidget, nameWidget, valueWidget, extraWidget]
 
+        for rank, item in enumerate(items):
+            if item is not None:
+                 grid.addWidget(item, rowIndex, rank)
+                 item.setParent(self)
+            else:
+                grid.addWidget(QLabel(f""), rowIndex, rank)
 
 
     def _createLayout(self):
@@ -217,10 +198,10 @@ class OptionsWidget(QWidget):
 
     
     def _getFolderWidget(self, name, item):
-        label, widget, btn, active = WidgetTool.getFolderInput(
+        label, widget, btn, active = WidgetTool.getDiskIoInput(
                                                     f"{name}:",
                                                     item['value'],
-                                                    self.fieldWidth,
+                                                    object='folder',
                                                     callback=self._callbackFor(item['callback']),
                                                     optional=(item['optional'], item['active'])
                                                 )
@@ -236,10 +217,10 @@ class OptionsWidget(QWidget):
     
 
     def _getFileWidget(self, name, item):
-        label, widget, btn, active = WidgetTool.getFileInput(
+        label, widget, btn, active = WidgetTool.getDiskIoInput(
                                                     f"{name}:",
                                                     item['value'],
-                                                    self.fieldWidth,
+                                                    object='file',
                                                     callback=self._callbackFor(item['callback']),
                                                     optional=(item['optional'], item['active'])
                                                 )
@@ -261,7 +242,6 @@ class OptionsWidget(QWidget):
                                                     callback=self._callbackFor(item['callback']),
                                                     optional=(item['optional'], item['active'])
                                                 )
-        # widget.setMinimumWidth(self.fieldWidth)
 
         self._addLineToLayout(
             optionalWidget=active,
@@ -280,7 +260,6 @@ class OptionsWidget(QWidget):
                                                     callback=self._callbackFor(item['callback']),
                                                     optional=(item['optional'], item['active'])
                                                 )
-        widget.setMinimumWidth(self.fieldWidth)
         
         self._addLineToLayout(
             optionalWidget=active,
@@ -299,7 +278,7 @@ class OptionsWidget(QWidget):
                                                     callback=self._callbackFor(item['callback']),
                                                     optional=(item['optional'], item['active'])
                                                 )
-        widget.setMinimumWidth(self.fieldWidth)
+        
         self._addLineToLayout(
             optionalWidget=active,
             nameWidget=label,
@@ -317,7 +296,6 @@ class OptionsWidget(QWidget):
                                                     callback=self._callbackFor(item['callback']),
                                                     optional=(item['optional'], item['active'])
                                                 )
-        widget.setMinimumWidth(self.fieldWidth)
         
         self._addLineToLayout(
             optionalWidget=active,
@@ -332,7 +310,6 @@ class OptionsWidget(QWidget):
         label, widget, active = WidgetTool.getLineInput(
                                                 f"{name}:",
                                                 item['value'],
-                                                self.fieldWidth,
                                                 callback=self._callbackFor(item['callback']),
                                                 optional=(item['optional'], item['active'])
                                             )
@@ -350,7 +327,6 @@ class OptionsWidget(QWidget):
         label, widget, active = WidgetTool.getLineInput(
                                                 f"{name}:",
                                                 item['value'],
-                                                self.fieldWidth,
                                                 callback=self._callbackFor(item['callback']),
                                                 optional=(item['optional'], item['active'])
                                             )
@@ -367,7 +343,6 @@ class OptionsWidget(QWidget):
         label, widget, active = WidgetTool.getLineInput(
                                                 f"{name}:",
                                                 item['value'],
-                                                self.fieldWidth,
                                                 callback=self._callbackFor(item['callback']),
                                                 optional=(item['optional'], item['active'])
                                             )
@@ -388,7 +363,6 @@ class OptionsWidget(QWidget):
                                                  callback=self._callbackFor(item['callback']),
                                                  optional=(item['optional'], item['active'])
                                              )
-        widget.setMinimumWidth(self.fieldWidth)
         widget.setCurrentText(item['value'])
         
         self._addLineToLayout(
@@ -404,7 +378,6 @@ class OptionsWidget(QWidget):
         label, widget, active = WidgetTool.getCheckbox(
                                                f"{name}",
                                                item['value'],
-                                               self.fieldWidth,
                                                callback=self._callbackFor(item['callback']),
                                                optional=(item['optional'], item['active'])
                                            )
@@ -465,7 +438,6 @@ class OptionsWidget(QWidget):
     def _onCancelButtonClicked(self):
         self.shut()
 
-
     def _transferValues(self):
         for name, item in self.options.items.items():
             widget = self.widgets[name]
@@ -473,9 +445,11 @@ class OptionsWidget(QWidget):
                 text = widget.currentText()
                 item['value'] = text
             if item['type'] == 'int':
-                item['value'] = int(widget.text().strip())
+                text = widget.text().strip()
+                item['value'] = int(text) if text else 0
             if item['type'] == 'float':
-                item['value'] = float(widget.text().strip())
+                text = widget.text().strip()
+                item['value'] = float(text) if text else 0.0
             if item['type'] == 'str':
                 item['value'] = widget.text()
             if item['type'] == 'bool':

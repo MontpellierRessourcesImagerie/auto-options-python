@@ -38,7 +38,7 @@ class WidgetTool:
         return activateWidget
 
     @staticmethod
-    def makeActivable(widgets, optional):
+    def _makeActivable(widgets, optional):
         isOptional, isActive = optional
         if not isOptional:
             return None
@@ -52,103 +52,79 @@ class WidgetTool:
         return checkbox
 
     @staticmethod
-    def getLineInput(labelText, defaultValue, fieldWidth, callback=None, optional=(False, True)):
-        """Returns a label displaying the given text and an input field
-        with the given default value.
-
-        :param parent: The parent widget of the label and the input field
-        :param labelText: The text of the label
-        :param defaultValue: The value initailly displayed in the input field
-        :param fieldWidth: The width of the input field
-        :param callback: A callback function with a parameter text. The function
-                         is called with the new text when the content of the
-                         input field changes
-        :return: A tupel of the label and the input field
-        :rtype: (QLabel, QLineEdit)
-        """
+    def _makeLabel(labelText):
         label = QLabel()
         label.setText(labelText)
         label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        return label
+
+    @staticmethod
+    def getLineInput(labelText, defaultValue, callback=None, optional=(False, True)):
+        """Returns a label displaying the given text and an input field
+        with the given default value.
+
+        :param labelText: The text of the label
+        :param defaultValue: The value initailly displayed in the input field
+        :param callback: A callback function with a parameter text. The function
+                         is called with the new text when the content of the
+                         input field changes
+        :return: A tuple of the label and the input field
+        :rtype: (QLabel, QLineEdit)
+        """
+        label = WidgetTool._makeLabel(labelText)
         inputWidget = QLineEdit()
         inputWidget.setText(str(defaultValue))
         if callback:
             inputWidget.textEdited.connect(callback)
-        inputWidget.setMinimumWidth(fieldWidth)
         inputWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        cb_used = WidgetTool.makeActivable([label, inputWidget], optional)
+        cb_used = WidgetTool._makeActivable([label, inputWidget], optional)
         return label, inputWidget, cb_used
+    
+    @staticmethod
+    def _browseFolder(inputWidget, callback):
+        folder = QFileDialog.getExistingDirectory(None, "Select Folder")
+        if folder:
+            inputWidget.setText(folder)
+            if callback:
+                callback(folder)
+
+    @staticmethod
+    def _browseFile(inputWidget, callback):
+        file, _ = QFileDialog.getOpenFileName(None, "Select File")
+        if file:
+            inputWidget.setText(file)
+            if callback:
+                callback(file)
     
 
     @staticmethod
-    def getFolderInput(labelText, defaultValue, fieldWidth, callback=None, optional=(False, True)):
-        """Returns a label displaying the given text and an input field
-        with the given default value.
+    def getDiskIoInput(labelText, defaultValue, object, callback=None, optional=(False, True)):
+        """
+        Returns a label displaying the given text, an input field with the given default value and a button to browse for a file or folder.
 
-        :param parent: The parent widget of the label and the input field
         :param labelText: The text of the label
         :param defaultValue: The value initailly displayed in the input field
-        :param fieldWidth: The width of the input field
+        :param object: A string that is either 'file' or 'folder' and determines whether the input field is for a file or a folder.
         :param callback: A callback function with a parameter text. The function
                          is called with the new text when the content of the
                          input field changes
-        :return: A tupel of the label and the input field
-        :rtype: (QLabel, QLineEdit)
+        :param optional: A tuple of two booleans. The first boolean determines whether the input field is optional. The second boolean determines whether the input field is active if it is optional.
+        :return: A tuple of the label, the input field and the button
+        :rtype: (QLabel, QLineEdit, QPushButton)
         """
-        label = QLabel()
-        label.setText(labelText)
-        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        label = WidgetTool._makeLabel(labelText)
         inputWidget = QLineEdit()
         inputWidget.setText(str(defaultValue))
         if callback:
             inputWidget.textEdited.connect(callback)
-        inputWidget.setMinimumWidth(fieldWidth)
         inputWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        button = QPushButton("...")
+        
+        button = QPushButton("📁")
         button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        def browseFolder():
-            folder = QFileDialog.getExistingDirectory(None, "Select Folder")
-            if folder:
-                inputWidget.setText(folder)
-                if callback:
-                    callback(folder)
-        button.clicked.connect(browseFolder)
-        cb_used = WidgetTool.makeActivable([label, inputWidget, button], optional)
-        return label, inputWidget, button, cb_used
-    
-
-    def getFileInput(labelText, defaultValue, fieldWidth, callback=None, optional=(False, True)):
-        """Returns a label displaying the given text and an input field
-        with the given default value.
-
-        :param parent: The parent widget of the label and the input field
-        :param labelText: The text of the label
-        :param defaultValue: The value initailly displayed in the input field
-        :param fieldWidth: The width of the input field
-        :param callback: A callback function with a parameter text. The function
-                         is called with the new text when the content of the
-                         input field changes
-        :return: A tupel of the label and the input field
-        :rtype: (QLabel, QLineEdit)
-        """
-        label = QLabel()
-        label.setText(labelText)
-        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
-        inputWidget = QLineEdit()
-        inputWidget.setText(str(defaultValue))
-        if callback:
-            inputWidget.textEdited.connect(callback)
-        inputWidget.setMinimumWidth(fieldWidth)
-        inputWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        button = QPushButton("...")
-        button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        def browseFile():
-            file, _ = QFileDialog.getOpenFileName(None, "Select File")
-            if file:
-                inputWidget.setText(file)
-                if callback:
-                    callback(file)
-        button.clicked.connect(browseFile)
-        cb_used = WidgetTool.makeActivable([label, inputWidget, button], optional)
+        fx = WidgetTool._browseFolder if object == 'folder' else WidgetTool._browseFile
+        button.clicked.connect(lambda: fx(inputWidget, callback))
+        cb_used = WidgetTool._makeActivable([label, inputWidget, button], optional)
+        
         return label, inputWidget, button, cb_used
 
 
@@ -157,22 +133,20 @@ class WidgetTool:
         """Returns a label displaying the given text and a combo-box
         with the given values.
 
-        :param parent: The parent widget of the label and the input field
         :param labelText: The text of the label
         :param values: The values in the list of the combo-box
         :param callback: A callback function that is called with the new text when the selected text changes.
-        :return: A tupel of the label and the input field
+        :param optional: A tuple of two booleans. The first boolean determines whether the input field is optional. The second boolean determines whether the input field is active if it is optional.
+        :return: A tuple of the label and the input field
         :rtype: (QLabel, QComboBox)
         """
-        label = QLabel()
-        label.setText(labelText)
-        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        label = WidgetTool._makeLabel(labelText)
         inputCombo = QComboBox()
         inputCombo.addItems(values)
         inputCombo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         if callback:
             inputCombo.currentTextChanged.connect(callback)
-        cb_used = WidgetTool.makeActivable([label, inputCombo], optional)
+        cb_used = WidgetTool._makeActivable([label, inputCombo], optional)
         return label, inputCombo, cb_used
 
 
@@ -197,32 +171,29 @@ class WidgetTool:
 
 
     @staticmethod
-    def getCheckbox(labelText, defaultValue, fieldWidth, callback=None, optional=(False, True)):
+    def getCheckbox(labelText, defaultValue, callback=None, optional=(False, True)):
         """Answers a label and a checkbox checked or unchecked depeding on the default value.
 
-        :param parent: The parent widget of the label and the input field
         :param labelText: The text of the label
         :param defaultValue: The boolean default value
-        :param fieldWidth: The maximum width of the checkbox
         :param callback: A callback function
-        :return: A tupel of a label and a checkbox
+        :param optional: A tuple of two booleans. The first boolean determines whether the input field is optional. The second boolean determines whether the input field is active if it is optional.
+        :return: A tuple of a label and a checkbox
         """
-        label = QLabel()
-        label.setText(labelText)
-        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        label = WidgetTool._makeLabel(labelText)
         cb = QCheckBox()
         cb.setChecked(defaultValue)
         if callback:
             cb.stateChanged.connect(callback)
-        cb.setMaximumWidth(fieldWidth)
         cb.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        cb_used = WidgetTool.makeActivable([label, cb], optional)
+        cb_used = WidgetTool._makeActivable([label, cb], optional)
         return label, cb, cb_used
 
 
 
 class TableView(QTableWidget):
-    """ A table that allows to copy the selected cells to the system-clipboard.
+    """ 
+    A table that allows to copy the selected cells to the system-clipboard.
     """
 
     def __init__(self, data, *args):
