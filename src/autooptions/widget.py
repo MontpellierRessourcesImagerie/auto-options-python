@@ -8,9 +8,10 @@ from qtpy.QtWidgets import (
 )
 from qtpy.QtGui import QColor
 from napari.utils.events import Event
+
 from autooptions.qtutil import WidgetTool
 from autooptions.napari_util import NapariUtil
-
+from autooptions.layouts import LayoutFactory
 
 
 class OptionsWidget(QWidget):
@@ -20,7 +21,7 @@ class OptionsWidget(QWidget):
     to the options file.
     """
 
-    def __init__(self, viewer, options, client=None):
+    def __init__(self, viewer, options, layout_type='default', client=None):
         """
         Create a new options widget. Layer add and remove events are caught and
         the combo-boxes are updated accordingly, depending on the layer types.
@@ -39,8 +40,6 @@ class OptionsWidget(QWidget):
         self.fftLayers = self.napariUtil.getFFTLayers()
         self.labelLayers = self.napariUtil.getLabelLayers()
         self.pointLayers = self.napariUtil.getPointsLayers()
-        self.mainLayout = None
-        self.gridLayout = None
         self.buttonsLayout = None
         self.buttons = {}
         self.imageComboBoxes = []
@@ -50,7 +49,8 @@ class OptionsWidget(QWidget):
         self.widgets = {}
         self.viewer.layers.events.inserted.connect(self._onLayerAddedOrRemoved)
         self.viewer.layers.events.removed.connect(self._onLayerAddedOrRemoved)
-        self._createLayout()
+        self.mainLayout = None
+        self._createLayout(layout_type)
 
 
     def addApplyButton(self, callback):
@@ -143,28 +143,8 @@ class OptionsWidget(QWidget):
         return func
     
 
-    def _makeMainLayout(self):
-        grid = QGridLayout()
-        main = QVBoxLayout()
-        main.addLayout(grid)
-        return main, grid
-    
-
-    def _addLineToLayout(self, optionalWidget=None, nameWidget=None, valueWidget=None, extraWidget=None):
-        grid = self.gridLayout
-        rowIndex = len(self.widgets)
-        items = [optionalWidget, nameWidget, valueWidget, extraWidget]
-
-        for rank, item in enumerate(items):
-            if item is not None:
-                 grid.addWidget(item, rowIndex, rank)
-                 item.setParent(self)
-            else:
-                grid.addWidget(QLabel(f""), rowIndex, rank)
-
-
-    def _createLayout(self):
-        self.mainLayout, self.gridLayout = self._makeMainLayout()
+    def _createLayout(self, layout_type):
+        self.mainLayout = LayoutFactory.createLayout(layout_type, self)
         for name, item in self.options.items.items():
             widget = None
             if item['type'] == 'image':
@@ -206,11 +186,11 @@ class OptionsWidget(QWidget):
                                                     optional=item['optional']
                                                 )
 
-        self._addLineToLayout(
-            optionalWidget=active, 
-            nameWidget=label, 
-            valueWidget=widget, 
-            extraWidget=btn
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active, 
+            nameLabel=label, 
+            valueField=widget, 
+            tailWidget=btn
         )
         
         return active, widget
@@ -224,11 +204,11 @@ class OptionsWidget(QWidget):
                                                     callback=self._callbackFor(item['callback']),
                                                     optional=item['optional']
                                                 )
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget,
-            extraWidget=btn
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget,
+            tailWidget=btn
         )
 
         return active, widget
@@ -243,10 +223,10 @@ class OptionsWidget(QWidget):
                                                     optional=item['optional']
                                                 )
 
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget
         )
 
         return active, widget
@@ -261,10 +241,10 @@ class OptionsWidget(QWidget):
                                                     optional=item['optional']
                                                 )
         
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget
         )
 
         return active, widget
@@ -279,10 +259,10 @@ class OptionsWidget(QWidget):
                                                     optional=item['optional']
                                                 )
         
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget
         )
 
         return active, widget
@@ -297,10 +277,10 @@ class OptionsWidget(QWidget):
                                                     optional=item['optional']
                                                 )
         
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget
         )
 
         return active, widget
@@ -314,10 +294,10 @@ class OptionsWidget(QWidget):
                                                 optional=item['optional']
                                             )
         
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget
         )
 
         return active, widget
@@ -330,10 +310,10 @@ class OptionsWidget(QWidget):
                                                 callback=self._callbackFor(item['callback']),
                                                 optional=item['optional']
                                             )
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget
         )
 
         return active, widget
@@ -347,10 +327,10 @@ class OptionsWidget(QWidget):
                                                 optional=item['optional']
                                             )
         
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget
         )
 
         return active, widget
@@ -365,10 +345,10 @@ class OptionsWidget(QWidget):
                                             )
         widget.setCurrentText(item['value'])
         
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget
         )
 
         return active, widget
@@ -382,10 +362,10 @@ class OptionsWidget(QWidget):
                                                 optional=item['optional']
                                             )
         
-        self._addLineToLayout(
-            optionalWidget=active,
-            nameWidget=label,
-            valueWidget=widget
+        self.mainLayout.addToLayout(
+            optionalCheckbox=active,
+            nameLabel=label,
+            valueField=widget
         )
 
         return active, widget
