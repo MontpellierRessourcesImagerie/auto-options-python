@@ -21,7 +21,7 @@ class OptionsWidget(QWidget):
     to the options file.
     """
 
-    def __init__(self, viewer, options, layout_type='default', client=None):
+    def __init__(self, viewer, options, layout_type='default', client=None, sameRowSet=None):
         """
         Create a new options widget. Layer add and remove events are caught and
         the combo-boxes are updated accordingly, depending on the layer types.
@@ -29,6 +29,7 @@ class OptionsWidget(QWidget):
         :param viewer: The napari viewer
         :param options: The options from which the dialog is created
         :param client: The client that handles callbacks when option values change
+        :param sameRowSet: A set of widgets that should be placed on the same row as the last added widget.
         """
         super().__init__()
         self.setWindowTitle(options.optionsName)
@@ -47,6 +48,7 @@ class OptionsWidget(QWidget):
         self.labelComboBoxes = []
         self.pointComboBoxes = []
         self.widgets = {}
+        self.sameRowSet = set() if sameRowSet is None else sameRowSet.copy()
         self.viewer.layers.events.inserted.connect(self._onLayerAddedOrRemoved)
         self.viewer.layers.events.removed.connect(self._onLayerAddedOrRemoved)
         self.mainLayout = None
@@ -143,8 +145,16 @@ class OptionsWidget(QWidget):
         return func
     
 
+    def sameRow(self, name):
+        self.sameRowSet.add(name)
+
+    
+    def isSameRow(self, name):
+        return name in self.sameRowSet
+    
+
     def _createLayout(self, layout_type):
-        self.mainLayout = LayoutFactory.createLayout(layout_type, self)
+        self.mainLayout = LayoutFactory.createLayout(layout_type=layout_type, same_row_set=self.sameRowSet, parent=self)
         for name, item in self.options.items.items():
             widget = None
             if item['type'] == 'image':
@@ -187,6 +197,7 @@ class OptionsWidget(QWidget):
                                                 )
 
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active, 
             nameLabel=label, 
             valueField=widget, 
@@ -205,6 +216,7 @@ class OptionsWidget(QWidget):
                                                     optional=item['optional']
                                                 )
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget,
@@ -224,6 +236,7 @@ class OptionsWidget(QWidget):
                                                 )
 
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget
@@ -242,6 +255,7 @@ class OptionsWidget(QWidget):
                                                 )
         
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget
@@ -260,6 +274,7 @@ class OptionsWidget(QWidget):
                                                 )
         
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget
@@ -278,6 +293,7 @@ class OptionsWidget(QWidget):
                                                 )
         
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget
@@ -295,6 +311,7 @@ class OptionsWidget(QWidget):
                                             )
         
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget
@@ -311,6 +328,7 @@ class OptionsWidget(QWidget):
                                                 optional=item['optional']
                                             )
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget
@@ -328,6 +346,7 @@ class OptionsWidget(QWidget):
                                             )
         
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget
@@ -346,6 +365,7 @@ class OptionsWidget(QWidget):
         widget.setCurrentText(item['value'])
         
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget
@@ -363,6 +383,7 @@ class OptionsWidget(QWidget):
                                             )
         
         self.mainLayout.addToLayout(
+            name=name,
             optionalCheckbox=active,
             nameLabel=label,
             valueField=widget

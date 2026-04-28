@@ -11,9 +11,9 @@ class LayoutFactory(object):
     defaultLayout = GridLayout
     
     @staticmethod
-    def createLayout(layout_type, parent=None):
+    def createLayout(layout_type, same_row_set=None, parent=None):
         layoutConstructor = LayoutFactory.availableLayouts.get(
             layout_type, 
             LayoutFactory.defaultLayout
         )
-        return layoutConstructor(parent)
+        return layoutConstructor(same_row_set=same_row_set, parent=parent)
