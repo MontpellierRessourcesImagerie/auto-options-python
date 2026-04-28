@@ -11,6 +11,7 @@ class VerticalLayout(BaseLayout):
         self.nRows = 0
         self.padSlots = False
         self.lastLayout = None
+        self.setSizingStrategy("fixed", 150)
 
     def setPadSlots(self, pad):
         self.padSlots = pad
@@ -20,16 +21,21 @@ class VerticalLayout(BaseLayout):
     
     def addToLayout(self, name="", optionalCheckbox=None, nameLabel=None, valueField=None, tailWidget=None):
         widgets = [optionalCheckbox, nameLabel, valueField, tailWidget]
+        self.applySizingStrategy(optionalCheckbox, nameLabel, valueField, tailWidget)
+
         h_layout = QHBoxLayout() if name not in self.sameRowSet else self.lastLayout
         container = QHBoxLayout()
+
         for widget in widgets:
             if widget is not None:
                 container.addWidget(widget)
                 widget.setParent(self.getParentWidget())
             elif self.padSlots:
                 container.addWidget(QLabel(f""))
+        
         h_layout.addLayout(container)
         if name not in self.sameRowSet:
             self.addLayout(h_layout)
+            self.nRows += 1
         self.lastLayout = h_layout
-        self.nRows += 1
+        

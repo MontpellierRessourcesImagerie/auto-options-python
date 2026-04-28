@@ -13,8 +13,7 @@ from qtpy.QtWidgets import (
     QTableWidgetItem, 
     QAction,
     QFileDialog,
-    QPushButton,
-    QSizePolicy
+    QPushButton
 )
 from qtpy.QtCore import Qt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -45,7 +44,6 @@ class WidgetTool:
         if not isOptional:
             return None
         checkbox = QCheckBox()
-        checkbox.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         checkbox.stateChanged.connect(WidgetTool.activateWidgetFactory(widgets))
         checkbox.setChecked(not isActive)
         checkbox.setChecked(isActive)
@@ -55,7 +53,6 @@ class WidgetTool:
     def _makeLabel(labelText):
         label = QLabel()
         label.setText(labelText)
-        label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
         return label
 
     @staticmethod
@@ -76,7 +73,7 @@ class WidgetTool:
         inputWidget.setText(str(defaultValue))
         if callback:
             inputWidget.textEdited.connect(callback)
-        inputWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+
         cb_used = WidgetTool._makeActivable([label, inputWidget], optional)
         return label, inputWidget, cb_used
     
@@ -117,10 +114,8 @@ class WidgetTool:
         inputWidget.setText(str(defaultValue))
         if callback:
             inputWidget.textEdited.connect(callback)
-        inputWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         
         button = QPushButton("📁")
-        button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         fx = WidgetTool._browseFolder if object == 'folder' else WidgetTool._browseFile
         button.clicked.connect(lambda: fx(inputWidget, callback))
         cb_used = WidgetTool._makeActivable([label, inputWidget, button], optional)
@@ -143,7 +138,7 @@ class WidgetTool:
         label = WidgetTool._makeLabel(labelText)
         inputCombo = QComboBox()
         inputCombo.addItems(values)
-        inputCombo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        
         if callback:
             inputCombo.currentTextChanged.connect(callback)
         cb_used = WidgetTool._makeActivable([label, inputCombo], optional)
@@ -185,7 +180,7 @@ class WidgetTool:
         cb.setChecked(defaultValue)
         if callback:
             cb.stateChanged.connect(callback)
-        cb.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        
         cb_used = WidgetTool._makeActivable([label, cb], optional)
         return label, cb, cb_used
 
