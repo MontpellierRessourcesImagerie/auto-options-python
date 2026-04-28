@@ -38,6 +38,7 @@ class WidgetTool:
                 widget.setEnabled(enabled)
         return activateWidget
 
+
     @staticmethod
     def _makeActivable(widgets, optional):
         isOptional, isActive = optional
@@ -49,11 +50,13 @@ class WidgetTool:
         checkbox.setChecked(isActive)
         return checkbox
 
+
     @staticmethod
     def _makeLabel(labelText):
         label = QLabel()
         label.setText(labelText)
         return label
+
 
     @staticmethod
     def getLineInput(labelText, defaultValue, callback=None, optional=(False, True)):
@@ -77,6 +80,7 @@ class WidgetTool:
         cb_used = WidgetTool._makeActivable([label, inputWidget], optional)
         return label, inputWidget, cb_used
     
+
     @staticmethod
     def _browseFolder(inputWidget, callback):
         folder = QFileDialog.getExistingDirectory(None, "Select Folder")
@@ -84,6 +88,7 @@ class WidgetTool:
             inputWidget.setText(folder)
             if callback:
                 callback(folder)
+
 
     @staticmethod
     def _browseFile(inputWidget, callback):

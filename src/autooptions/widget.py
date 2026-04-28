@@ -391,6 +391,7 @@ class OptionsWidget(QWidget):
 
         return active, widget
 
+
     def _getButtonsLayout(self):
         if not self.buttonsLayout:
             self.buttonsLayout = QHBoxLayout()
@@ -438,6 +439,7 @@ class OptionsWidget(QWidget):
 
     def _onCancelButtonClicked(self):
         self.shut()
+
 
     def _transferValues(self):
         for name, item in self.options.items.items():

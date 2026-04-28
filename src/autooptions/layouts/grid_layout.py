@@ -7,6 +7,7 @@ from qtpy.QtWidgets import (
 from autooptions.layouts.base_layout import BaseLayout
 
 class GridLayout(BaseLayout):
+    
     def __init__(self, same_row_set=None, parent=None):
         super().__init__(parent, same_row_set)
         self.gridLayout = QGridLayout()
@@ -15,9 +16,11 @@ class GridLayout(BaseLayout):
         self.nLines = 0
         self.setSizingStrategy("auto")
     
+
     def size(self):
         return self.nLines
     
+
     def addToLayout(self, name="", optionalCheckbox=None, nameLabel=None, valueField=None, tailWidget=None):
         grid = self.gridLayout
         rowIndex = self.size()

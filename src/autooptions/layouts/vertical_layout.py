@@ -6,6 +6,7 @@ from qtpy.QtWidgets import (
 from autooptions.layouts.base_layout import BaseLayout
 
 class VerticalLayout(BaseLayout):
+    
     def __init__(self, same_row_set=None, parent=None):
         super().__init__(parent, same_row_set)
         self.nRows = 0
@@ -13,11 +14,14 @@ class VerticalLayout(BaseLayout):
         self.lastLayout = None
         self.setSizingStrategy("fixed", 150)
 
+
     def setPadSlots(self, pad):
         self.padSlots = pad
     
+
     def size(self):
         return self.nRows
+    
     
     def addToLayout(self, name="", optionalCheckbox=None, nameLabel=None, valueField=None, tailWidget=None):
         widgets = [optionalCheckbox, nameLabel, valueField, tailWidget]

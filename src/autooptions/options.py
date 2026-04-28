@@ -124,7 +124,7 @@ class Options:
         return callbackName
 
 
-    def addImage(self, name='image', value=None, transient=True, position=None, callback=None, optional=(False, True)):
+    def addImage(self, name='image', value=None, transient=True, position=None, callback=None, optional=[False, True]):
         """
         Add an option that represents the selection of an image. Image options are often transient.
 
@@ -140,7 +140,7 @@ class Options:
                             'type': 'image'})
 
 
-    def addLabels(self, name='labels', value=None, transient=True, position=None, callback=None, optional=(False, True)):
+    def addLabels(self, name='labels', value=None, transient=True, position=None, callback=None, optional=[False, True]):
         """
         Add an option that represents the selection of a labels image. Labels options are often transient.
 
@@ -156,7 +156,7 @@ class Options:
             'type': 'labels'})
 
 
-    def addFFT(self, name='fft', value=None, transient=True, position=None, callback=None, optional=(False, True)):
+    def addFFT(self, name='fft', value=None, transient=True, position=None, callback=None, optional=[False, True]):
         """
         Add an option that represents the selection of an FFT image. Image options are often transient. The FFT
         is not a standard image, since only the amplitude information is in the image, while the phase information is
@@ -174,7 +174,7 @@ class Options:
                             'type': 'fft'})
 
 
-    def addPoints(self, name='points', value=None, transient=True, position=None, callback=None, optional=(False, True)):
+    def addPoints(self, name='points', value=None, transient=True, position=None, callback=None, optional=[False, True]):
         """
         Add an option that represents the selection of a points layer. Points options are often transient.
 
@@ -190,7 +190,7 @@ class Options:
             'type': 'points'})
 
 
-    def addInt(self, name, value=1, transient=False, position=None, widget="input", callback=None, optional=(False, True)):
+    def addInt(self, name, value=1, transient=False, position=None, widget="input", callback=None, optional=[False, True]):
         """
         An option that represents an integer value.
 
@@ -210,7 +210,7 @@ class Options:
                             'widget': widget})
 
 
-    def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", callback=None, optional=(False, True)):
+    def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", callback=None, optional=[False, True]):
         """
         An option that represents a float value.
 
@@ -230,7 +230,7 @@ class Options:
                             'widget': widget})
 
 
-    def addChoice(self, name, value=None, choices=None, transient=False, position=None, callback=None, optional=(False, True)):
+    def addChoice(self, name, value=None, choices=None, transient=False, position=None, callback=None, optional=[False, True]):
         """
         An option that represents a choice in a list of given values.
 
@@ -251,7 +251,7 @@ class Options:
             'choices': choices})
 
 
-    def addStr(self, name, value="", transient=False, position=None, callback=None, optional=(False, True)):
+    def addStr(self, name, value="", transient=False, position=None, callback=None, optional=[False, True]):
         """
         An option that represents a textual value.
 
@@ -269,7 +269,7 @@ class Options:
                      'widget': "input"})
 
 
-    def addBool(self, name, value=False, transient=False, position=None, callback=None, optional=(False, True)):
+    def addBool(self, name, value=False, transient=False, position=None, callback=None, optional=[False, True]):
         """
         An option that represents a binary choice.
 
@@ -288,7 +288,7 @@ class Options:
                      'widget': "checkbox"})
     
 
-    def addFolder(self, name='folder', value="", transient=True, position=None, callback=None, optional=(False, True)):
+    def addFolder(self, name='folder', value="", transient=True, position=None, callback=None, optional=[False, True]):
         """
         Add an option that represents the selection of a folder. Folder options are often transient.
 
@@ -304,7 +304,7 @@ class Options:
             'type': 'folder'})
         
 
-    def addFile(self, name='file', value="", transient=True, position=None, callback=None, optional=(False, True)):
+    def addFile(self, name='file', value="", transient=True, position=None, callback=None, optional=[False, True]):
         """
         Add an option that represents the selection of a file. File options are often transient.
 
