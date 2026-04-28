@@ -32,9 +32,11 @@ class WidgetTool:
     """
 
     @staticmethod
-    def activateWidgetFactory(widget):
+    def activateWidgetFactory(widgets):
         def activateWidget(state):
-            widget.setEnabled(state == 2)
+            enabled = state == 2
+            for widget in widgets:
+                widget.setEnabled(enabled)
         return activateWidget
 
     @staticmethod
@@ -44,11 +46,9 @@ class WidgetTool:
             return None
         checkbox = QCheckBox()
         checkbox.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        checkbox.stateChanged.connect(WidgetTool.activateWidgetFactory(widgets))
+        checkbox.setChecked(not isActive)
         checkbox.setChecked(isActive)
-        for widget in widgets:
-            checkbox.stateChanged.connect(WidgetTool.activateWidgetFactory(widget))
-            if not isActive:
-                widget.setEnabled(False)
         return checkbox
 
     @staticmethod

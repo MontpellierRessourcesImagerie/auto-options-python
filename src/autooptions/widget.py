@@ -102,8 +102,8 @@ class OptionsWidget(QWidget):
         """
         Answers the ok button if it exists and None otherwise.
         """
-        if 'Ok' in self.buttons.keys():
-            return self.buttons['Ok']
+        if 'OK' in self.buttons.keys():
+            return self.buttons['OK']
         return None
 
 
@@ -168,32 +168,32 @@ class OptionsWidget(QWidget):
         for name, item in self.options.items.items():
             widget = None
             if item['type'] == 'image':
-                widget = self._getImageWidget(name, item)
+                checkbox, widget = self._getImageWidget(name, item)
                 self.imageComboBoxes.append(widget)
             if item['type'] == 'labels':
-                widget = self._getLabelsWidget(name, item)
+                checkbox, widget = self._getLabelsWidget(name, item)
                 self.labelComboBoxes.append(widget)
             if item['type'] == 'points':
-                widget = self._getPointsWidget(name, item)
+                checkbox, widget = self._getPointsWidget(name, item)
                 self.pointComboBoxes.append(widget)
             if item['type'] == 'fft':
-                widget = self._getFFTWidget(name, item)
+                checkbox, widget = self._getFFTWidget(name, item)
                 self.fftComboBoxes.append(widget)
             if item['type'] == 'int':
-                widget = self._getIntWidget(name, item)
+                checkbox, widget = self._getIntWidget(name, item)
             if item['type'] == 'float':
-                widget = self._getFloatWidget(name, item)
+                checkbox, widget = self._getFloatWidget(name, item)
             if item['type'] == 'choice':
-                widget = self._getChoiceWidget(name, item)
+                checkbox, widget = self._getChoiceWidget(name, item)
             if item['type'] == 'str':
-                widget = self._getStrWidget(name, item)
+                checkbox, widget = self._getStrWidget(name, item)
             if item['type'] == 'bool':
-                widget = self._getBoolWidget(name, item)
+                checkbox, widget = self._getBoolWidget(name, item)
             if item['type'] == 'folder':
-                widget = self._getFolderWidget(name, item)
+                checkbox, widget = self._getFolderWidget(name, item)
             if item['type'] == 'file':
-                widget = self._getFileWidget(name, item)
-            self.widgets[name] = widget
+                checkbox, widget = self._getFileWidget(name, item)
+            self.widgets[name] = (checkbox, widget)
         self.setLayout(self.mainLayout)
 
     
@@ -203,7 +203,7 @@ class OptionsWidget(QWidget):
                                                     item['value'],
                                                     object='folder',
                                                     callback=self._callbackFor(item['callback']),
-                                                    optional=(item['optional'], item['active'])
+                                                    optional=item['optional']
                                                 )
 
         self._addLineToLayout(
@@ -213,7 +213,7 @@ class OptionsWidget(QWidget):
             extraWidget=btn
         )
         
-        return widget
+        return active, widget
     
 
     def _getFileWidget(self, name, item):
@@ -222,7 +222,7 @@ class OptionsWidget(QWidget):
                                                     item['value'],
                                                     object='file',
                                                     callback=self._callbackFor(item['callback']),
-                                                    optional=(item['optional'], item['active'])
+                                                    optional=item['optional']
                                                 )
         self._addLineToLayout(
             optionalWidget=active,
@@ -231,7 +231,7 @@ class OptionsWidget(QWidget):
             extraWidget=btn
         )
 
-        return widget
+        return active, widget
 
 
     def _getImageWidget(self, name, item):
@@ -240,7 +240,7 @@ class OptionsWidget(QWidget):
                                                     f"{name}:",
                                                     self.imageLayers,
                                                     callback=self._callbackFor(item['callback']),
-                                                    optional=(item['optional'], item['active'])
+                                                    optional=item['optional']
                                                 )
 
         self._addLineToLayout(
@@ -249,7 +249,7 @@ class OptionsWidget(QWidget):
             valueWidget=widget
         )
 
-        return widget
+        return active, widget
 
 
     def _getLabelsWidget(self, name, item):
@@ -258,7 +258,7 @@ class OptionsWidget(QWidget):
                                                     f"{name}:",
                                                     self.labelLayers,
                                                     callback=self._callbackFor(item['callback']),
-                                                    optional=(item['optional'], item['active'])
+                                                    optional=item['optional']
                                                 )
         
         self._addLineToLayout(
@@ -267,7 +267,7 @@ class OptionsWidget(QWidget):
             valueWidget=widget
         )
 
-        return widget
+        return active, widget
 
 
     def _getPointsWidget(self, name, item):
@@ -276,7 +276,7 @@ class OptionsWidget(QWidget):
                                                     f"{name}:",
                                                     self.pointsLayers,
                                                     callback=self._callbackFor(item['callback']),
-                                                    optional=(item['optional'], item['active'])
+                                                    optional=item['optional']
                                                 )
         
         self._addLineToLayout(
@@ -285,7 +285,7 @@ class OptionsWidget(QWidget):
             valueWidget=widget
         )
 
-        return widget
+        return active, widget
 
 
     def _getFFTWidget(self, name, item):
@@ -294,7 +294,7 @@ class OptionsWidget(QWidget):
                                                     f"{name}:",
                                                     self.fftLayers,
                                                     callback=self._callbackFor(item['callback']),
-                                                    optional=(item['optional'], item['active'])
+                                                    optional=item['optional']
                                                 )
         
         self._addLineToLayout(
@@ -303,7 +303,7 @@ class OptionsWidget(QWidget):
             valueWidget=widget
         )
 
-        return widget
+        return active, widget
 
 
     def _getIntWidget(self, name, item):
@@ -311,7 +311,7 @@ class OptionsWidget(QWidget):
                                                 f"{name}:",
                                                 item['value'],
                                                 callback=self._callbackFor(item['callback']),
-                                                optional=(item['optional'], item['active'])
+                                                optional=item['optional']
                                             )
         
         self._addLineToLayout(
@@ -320,7 +320,7 @@ class OptionsWidget(QWidget):
             valueWidget=widget
         )
 
-        return widget
+        return active, widget
 
 
     def _getFloatWidget(self, name, item):
@@ -328,7 +328,7 @@ class OptionsWidget(QWidget):
                                                 f"{name}:",
                                                 item['value'],
                                                 callback=self._callbackFor(item['callback']),
-                                                optional=(item['optional'], item['active'])
+                                                optional=item['optional']
                                             )
         self._addLineToLayout(
             optionalWidget=active,
@@ -336,7 +336,7 @@ class OptionsWidget(QWidget):
             valueWidget=widget
         )
 
-        return widget
+        return active, widget
 
 
     def _getStrWidget(self, name, item):
@@ -344,7 +344,7 @@ class OptionsWidget(QWidget):
                                                 f"{name}:",
                                                 item['value'],
                                                 callback=self._callbackFor(item['callback']),
-                                                optional=(item['optional'], item['active'])
+                                                optional=item['optional']
                                             )
         
         self._addLineToLayout(
@@ -353,16 +353,16 @@ class OptionsWidget(QWidget):
             valueWidget=widget
         )
 
-        return widget
+        return active, widget
 
 
     def _getChoiceWidget(self, name, item):
         label, widget, active = WidgetTool.getComboInput(
-                                                 f"{name}:",
-                                                 item['choices'],
-                                                 callback=self._callbackFor(item['callback']),
-                                                 optional=(item['optional'], item['active'])
-                                             )
+                                                f"{name}:",
+                                                item['choices'],
+                                                callback=self._callbackFor(item['callback']),
+                                                optional=item['optional']
+                                            )
         widget.setCurrentText(item['value'])
         
         self._addLineToLayout(
@@ -371,16 +371,16 @@ class OptionsWidget(QWidget):
             valueWidget=widget
         )
 
-        return widget
+        return active, widget
 
 
     def _getBoolWidget(self, name, item):
         label, widget, active = WidgetTool.getCheckbox(
-                                               f"{name}",
-                                               item['value'],
-                                               callback=self._callbackFor(item['callback']),
-                                               optional=(item['optional'], item['active'])
-                                           )
+                                                f"{name}:",
+                                                item['value'],
+                                                callback=self._callbackFor(item['callback']),
+                                                optional=item['optional']
+                                            )
         
         self._addLineToLayout(
             optionalWidget=active,
@@ -388,7 +388,7 @@ class OptionsWidget(QWidget):
             valueWidget=widget
         )
 
-        return widget
+        return active, widget
 
     def _getButtonsLayout(self):
         if not self.buttonsLayout:
@@ -404,7 +404,7 @@ class OptionsWidget(QWidget):
 
 
     def _createOKButton(self, callback):
-        button = self._createButton("&Ok", callback, self._onOKButtonClicked)
+        button = self._createButton("&OK", callback, self._onOKButtonClicked)
         return button
 
 
@@ -440,7 +440,11 @@ class OptionsWidget(QWidget):
 
     def _transferValues(self):
         for name, item in self.options.items.items():
-            widget = self.widgets[name]
+            checkbox, widget = self.widgets[name]
+            isEnabled = checkbox.isChecked() if checkbox else True
+            if not isEnabled:
+                item['value'] = None
+                continue
             if item['type']  in ['image', 'choice', 'fft']:
                 text = widget.currentText()
                 item['value'] = text
@@ -456,7 +460,6 @@ class OptionsWidget(QWidget):
                 item['value'] = widget.isChecked()
             if item['type'] == 'folder' or item['type'] == 'file':
                 item['value'] = widget.text()
-            item['active'] = widget.isEnabled()
 
 
     def _onLayerAddedOrRemoved(self, event: Event):

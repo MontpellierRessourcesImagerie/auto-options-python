@@ -91,22 +91,9 @@ class Options:
         Answer the value of the option with the given name.
 
         :param name: The name of an option
-        :return: The value of the option with the given name. The type of the result depends on the type of the option. If the option is optional and not active, None is returned.
+        :return: The value of the option with the given name. The type of the result depends on the type of the option.
         """
-        if self.get(name)['optional'] and not self.get(name)['active']:
-            return None
         return self.get(name)['value']
-    
-
-    def isActive(self, name):
-        """
-        Answer whether the option with the given name is active. An option is active if it is not optional or if it is
-        optional and has a value that is not None.
-
-        :param name: The name of an option
-        :return: True if the option with the given name is active and False otherwise.
-        """
-        return not self.get(name)['optional'] or self.get(name)['active']
 
 
     def set(self, name, option):
@@ -122,13 +109,10 @@ class Options:
     def setValue(self, name, value):
         """
         Set the value of the option with the given name to value.
-        If the option is optional and not active, the value will not be set.
 
         :param name: The name of an option
         :param value: The new value of the option
         """
-        if self.get(name)['optional'] and not self.get(name)['active']:
-            return
         self.get(name)['value'] = value
 
 
@@ -140,7 +124,7 @@ class Options:
         return callbackName
 
 
-    def addImage(self, name='image', value=None, transient=True, position=None, callback=None, optional=False):
+    def addImage(self, name='image', value=None, transient=True, position=None, callback=None, optional=(False, True)):
         """
         Add an option that represents the selection of an image. Image options are often transient.
 
@@ -156,7 +140,7 @@ class Options:
                             'type': 'image'})
 
 
-    def addLabels(self, name='labels', value=None, transient=True, position=None, callback=None, optional=False):
+    def addLabels(self, name='labels', value=None, transient=True, position=None, callback=None, optional=(False, True)):
         """
         Add an option that represents the selection of a labels image. Labels options are often transient.
 
@@ -172,7 +156,7 @@ class Options:
             'type': 'labels'})
 
 
-    def addFFT(self, name='fft', value=None, transient=True, position=None, callback=None, optional=False):
+    def addFFT(self, name='fft', value=None, transient=True, position=None, callback=None, optional=(False, True)):
         """
         Add an option that represents the selection of an FFT image. Image options are often transient. The FFT
         is not a standard image, since only the amplitude information is in the image, while the phase information is
@@ -190,7 +174,7 @@ class Options:
                             'type': 'fft'})
 
 
-    def addPoints(self, name='points', value=None, transient=True, position=None, callback=None, optional=False):
+    def addPoints(self, name='points', value=None, transient=True, position=None, callback=None, optional=(False, True)):
         """
         Add an option that represents the selection of a points layer. Points options are often transient.
 
@@ -206,7 +190,7 @@ class Options:
             'type': 'points'})
 
 
-    def addInt(self, name, value=1, transient=False, position=None, widget="input", callback=None, optional=False):
+    def addInt(self, name, value=1, transient=False, position=None, widget="input", callback=None, optional=(False, True)):
         """
         An option that represents an integer value.
 
@@ -226,7 +210,7 @@ class Options:
                             'widget': widget})
 
 
-    def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", callback=None, optional=False):
+    def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", callback=None, optional=(False, True)):
         """
         An option that represents a float value.
 
@@ -246,7 +230,7 @@ class Options:
                             'widget': widget})
 
 
-    def addChoice(self, name, value=None, choices=None, transient=False, position=None, callback=None, optional=False):
+    def addChoice(self, name, value=None, choices=None, transient=False, position=None, callback=None, optional=(False, True)):
         """
         An option that represents a choice in a list of given values.
 
@@ -267,7 +251,7 @@ class Options:
             'choices': choices})
 
 
-    def addStr(self, name, value="", transient=False, position=None, callback=None, optional=False):
+    def addStr(self, name, value="", transient=False, position=None, callback=None, optional=(False, True)):
         """
         An option that represents a textual value.
 
@@ -285,7 +269,7 @@ class Options:
                      'widget': "input"})
 
 
-    def addBool(self, name, value=False, transient=False, position=None, callback=None, optional=False):
+    def addBool(self, name, value=False, transient=False, position=None, callback=None, optional=(False, True)):
         """
         An option that represents a binary choice.
 
@@ -304,7 +288,7 @@ class Options:
                      'widget': "checkbox"})
     
 
-    def addFolder(self, name='folder', value="", transient=True, position=None, callback=None, optional=False):
+    def addFolder(self, name='folder', value="", transient=True, position=None, callback=None, optional=(False, True)):
         """
         Add an option that represents the selection of a folder. Folder options are often transient.
 
@@ -320,7 +304,7 @@ class Options:
             'type': 'folder'})
         
 
-    def addFile(self, name='file', value="", transient=True, position=None, callback=None, optional=False):
+    def addFile(self, name='file', value="", transient=True, position=None, callback=None, optional=(False, True)):
         """
         Add an option that represents the selection of a file. File options are often transient.
 
@@ -346,21 +330,13 @@ class Options:
                          ordered). If none is given, the next free position is used.
         :param callback: A callback function, that is called when the value of the option changes.
         """
-        if type(optional) == bool:
-            optional = optional
-            active = True
-        elif type(optional) == tuple and len(optional) == 2:
-            optional, active = optional
-        else:
-            raise ValueError("optional must be either a boolean or a tuple of two booleans")
-        
+
         return { 
             'value'    : value,
             'transient': transient,
             'position' : self._getPosition(position),
             'callback' : self.getCallbackName(callback),
-            'optional' : optional,
-            'active'   : active
+            'optional' : optional
         }
 
 
