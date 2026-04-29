@@ -157,11 +157,12 @@ class TestOptions:
 
 
     def testGetBaseOption(self, options):
-        option = options._getBaseOption(7, True, None, self.onSomething)
+        option = options._getBaseOption(7, True, None, self.onSomething, [True, False])
         assert option["value"] == 7
         assert option["transient"] == True
         assert option["position"] == 6
         assert option["callback"] == "onSomething"
+        assert option["optional"] == [True, False]
 
 
     def test_GetPosition(self, options):

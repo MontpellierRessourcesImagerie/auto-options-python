@@ -1,29 +1,31 @@
-from qtpy.QtWidgets import (
-    QHBoxLayout,
-    QLabel
-)
+from qtpy.QtWidgets import QHBoxLayout, QLabel
 
 from autooptions.layouts.base_layout import BaseLayout
 
+
 class VerticalLayout(BaseLayout):
-    
-    def __init__(self, same_row_set=None, parent=None):
+
+    def __init__(self, same_row_set=None, parent=None, max_width=150, **kwargs):
         super().__init__(parent, same_row_set)
         self.nRows = 0
         self.padSlots = False
         self.lastLayout = None
-        self.setSizingStrategy("fixed", 150)
-
+        self.setSizingStrategy("fixed", max_width)
 
     def setPadSlots(self, pad):
         self.padSlots = pad
-    
 
     def size(self):
         return self.nRows
-    
-    
-    def addToLayout(self, name="", optionalCheckbox=None, nameLabel=None, valueField=None, tailWidget=None):
+
+    def addToLayout(
+        self,
+        name="",
+        optionalCheckbox=None,
+        nameLabel=None,
+        valueField=None,
+        tailWidget=None,
+    ):
         widgets = [optionalCheckbox, nameLabel, valueField, tailWidget]
         self.applySizingStrategy(optionalCheckbox, nameLabel, valueField, tailWidget)
 
@@ -36,10 +38,9 @@ class VerticalLayout(BaseLayout):
                 widget.setParent(self.getParentWidget())
             elif self.padSlots:
                 container.addWidget(QLabel(f""))
-        
+
         h_layout.addLayout(container)
         if name not in self.sameRowSet:
             self.addLayout(h_layout)
             self.nRows += 1
         self.lastLayout = h_layout
-        
