@@ -1,17 +1,29 @@
-from typing import TYPE_CHECKING
 import pyperclip
 import numpy as np
 import matplotlib.pyplot as plt
-from qtpy.QtWidgets import QHBoxLayout, QCheckBox
+from qtpy.QtWidgets import (
+    QHBoxLayout,
+    QCheckBox,
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QLineEdit,
+    QComboBox,
+    QTableWidget,
+    QTableWidgetItem,
+    QAction,
+    QFileDialog,
+    QPushButton,
+)
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
-from qtpy.QtWidgets import QLabel, QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QAction
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from napari.utils import notifications
 from autooptions.array_util import ArrayUtil
+
+from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     import napari
-
 
 
 class WidgetTool:
@@ -20,50 +32,119 @@ class WidgetTool:
     """
 
     @staticmethod
-    def getLineInput(parent, labelText, defaultValue, fieldWidth, callback):
+    def activateWidgetFactory(widgets):
+        def activateWidget(state):
+            enabled = state == 2
+            for widget in widgets:
+                widget.setEnabled(enabled)
+
+        return activateWidget
+
+    @staticmethod
+    def _makeActivable(widgets, optional):
+        isOptional, isActive = optional
+        if not isOptional:
+            return None
+        checkbox = QCheckBox()
+        checkbox.stateChanged.connect(WidgetTool.activateWidgetFactory(widgets))
+        checkbox.setChecked(not isActive)
+        checkbox.setChecked(isActive)
+        return checkbox
+
+    @staticmethod
+    def _makeLabel(labelText):
+        label = QLabel()
+        label.setText(labelText)
+        return label
+
+    @staticmethod
+    def getLineInput(labelText, defaultValue, callback=None, optional=(False, True)):
         """Returns a label displaying the given text and an input field
         with the given default value.
 
-        :param parent: The parent widget of the label and the input field
         :param labelText: The text of the label
         :param defaultValue: The value initailly displayed in the input field
-        :param fieldWidth: The width of the input field
         :param callback: A callback function with a parameter text. The function
                          is called with the new text when the content of the
                          input field changes
-        :return: A tupel of the label and the input field
+        :return: A tuple of the label and the input field
         :rtype: (QLabel, QLineEdit)
         """
-        label = QLabel(parent)
-        label.setText(labelText)
-        inputWidget = QLineEdit(parent)
+        label = WidgetTool._makeLabel(labelText)
+        inputWidget = QLineEdit()
         inputWidget.setText(str(defaultValue))
         if callback:
             inputWidget.textEdited.connect(callback)
-        inputWidget.setMaximumWidth(fieldWidth)
-        return label, inputWidget
 
+        cb_used = WidgetTool._makeActivable([label, inputWidget], optional)
+        return label, inputWidget, cb_used
 
     @staticmethod
-    def getComboInput(parent, labelText, values, callback=None):
+    def _browseFolder(inputWidget, callback):
+        folder = QFileDialog.getExistingDirectory(None, "Select Folder")
+        if folder:
+            inputWidget.setText(folder)
+            if callback:
+                callback(folder)
+
+    @staticmethod
+    def _browseFile(inputWidget, callback):
+        file, _ = QFileDialog.getOpenFileName(None, "Select File")
+        if file:
+            inputWidget.setText(file)
+            if callback:
+                callback(file)
+
+    @staticmethod
+    def getDiskIoInput(
+        labelText, defaultValue, object, callback=None, optional=(False, True)
+    ):
+        """
+        Returns a label displaying the given text, an input field with the given default value and a button to browse for a file or folder.
+
+        :param labelText: The text of the label
+        :param defaultValue: The value initailly displayed in the input field
+        :param object: A string that is either 'file' or 'folder' and determines whether the input field is for a file or a folder.
+        :param callback: A callback function with a parameter text. The function
+                         is called with the new text when the content of the
+                         input field changes
+        :param optional: A tuple of two booleans. The first boolean determines whether the input field is optional. The second boolean determines whether the input field is active if it is optional.
+        :return: A tuple of the label, the input field and the button
+        :rtype: (QLabel, QLineEdit, QPushButton)
+        """
+        label = WidgetTool._makeLabel(labelText)
+        inputWidget = QLineEdit()
+        inputWidget.setText(str(defaultValue))
+        if callback:
+            inputWidget.textEdited.connect(callback)
+
+        button = QPushButton("📁")
+        fx = WidgetTool._browseFolder if object == "folder" else WidgetTool._browseFile
+        button.clicked.connect(lambda: fx(inputWidget, callback))
+        cb_used = WidgetTool._makeActivable([label, inputWidget, button], optional)
+
+        return label, inputWidget, button, cb_used
+
+    @staticmethod
+    def getComboInput(labelText, values, callback=None, optional=(False, True)):
         """Returns a label displaying the given text and a combo-box
         with the given values.
 
-        :param parent: The parent widget of the label and the input field
         :param labelText: The text of the label
         :param values: The values in the list of the combo-box
         :param callback: A callback function that is called with the new text when the selected text changes.
-        :return: A tupel of the label and the input field
+        :param optional: A tuple of two booleans. The first boolean determines whether the input field is optional. The second boolean determines whether the input field is active if it is optional.
+        :return: A tuple of the label and the input field
         :rtype: (QLabel, QComboBox)
         """
-        label = QLabel(parent)
-        label.setText(labelText)
-        inputCombo = QComboBox(parent)
+        label = WidgetTool._makeLabel(labelText)
+        inputCombo = QComboBox()
         inputCombo.addItems(values)
+
         if callback:
             inputCombo.currentTextChanged.connect(callback)
-        return label, inputCombo
-
+        cb_used = WidgetTool._makeActivable([label, inputCombo], optional)
+        return label, inputCombo, cb_used
 
     @staticmethod
     def replaceItemsInComboBox(comboBox, newItems):
@@ -84,31 +165,29 @@ class WidgetTool:
         if index > -1:
             comboBox.setCurrentIndex(index)
 
-
     @staticmethod
-    def getCheckbox(parent, labelText, defaultValue, fieldWidth, callback):
+    def getCheckbox(labelText, defaultValue, callback=None, optional=(False, True)):
         """Answers a label and a checkbox checked or unchecked depeding on the default value.
 
-        :param parent: The parent widget of the label and the input field
         :param labelText: The text of the label
         :param defaultValue: The boolean default value
-        :param fieldWidth: The maximum width of the checkbox
         :param callback: A callback function
-        :return: A tupel of a label and a checkbox
+        :param optional: A tuple of two booleans. The first boolean determines whether the input field is optional. The second boolean determines whether the input field is active if it is optional.
+        :return: A tuple of a label and a checkbox
         """
-        label = QLabel(parent)
-        label.setText(labelText)
-        cb = QCheckBox(parent)
+        label = WidgetTool._makeLabel(labelText)
+        cb = QCheckBox()
         cb.setChecked(defaultValue)
         if callback:
             cb.stateChanged.connect(callback)
-        cb.setMaximumWidth(fieldWidth)
-        return label, cb
 
+        cb_used = WidgetTool._makeActivable([label, cb], optional)
+        return label, cb, cb_used
 
 
 class TableView(QTableWidget):
-    """ A table that allows to copy the selected cells to the system-clipboard.
+    """
+    A table that allows to copy the selected cells to the system-clipboard.
     """
 
     def __init__(self, data, *args):
@@ -135,18 +214,15 @@ class TableView(QTableWidget):
         self.deleteAction = QAction("Delete", self)
         self.addAction(self.deleteAction)
 
-
     def setData(self, table):
         """Clear the table and replace the data in the table with the input table"""
         self.data = table
         self.resetView()
 
-
     def resetView(self):
         """Resets the view to the data of the table view"""
         self.clear()
         self.__setData()
-
 
     def __setData(self):
         horizontalHeaders = []
@@ -160,7 +236,6 @@ class TableView(QTableWidget):
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
 
-
     def keyPressEvent(self, event):
         """Copy the selected table data to the system clipboard if the key-event
         is ctrl+C.
@@ -171,36 +246,34 @@ class TableView(QTableWidget):
         if event.key() == Qt.Key_C and (event.modifiers() & Qt.ControlModifier):
             self.copyDataToClipboard()
 
-
     def copyDataToClipboard(self):
-        """ Copy the data in the selected table-cells into the system clipboard.
-        """
+        """Copy the data in the selected table-cells into the system clipboard."""
         notifications.show_info("copying data to clipboard")
         tableDataAsText = self.getSelectedDataAsString()
         pyperclip.copy(tableDataAsText)
 
-
     def getSelectedDataAsString(self):
-        """ Get the data in the selected cells as a string. Columns are
+        """Get the data in the selected cells as a string. Columns are
         separated by tabs and lines by newlines".
         """
         copied_cells = self.selectedIndexes()
         if len(copied_cells) == 0:
             return ""
-        labels = [self.horizontalHeaderItem(id).text() for id in range(0, self.columnCount())]
-        data = [['' for i in range(self.columnCount())] for j in range(self.rowCount())]
+        labels = [
+            self.horizontalHeaderItem(id).text() for id in range(0, self.columnCount())
+        ]
+        data = [["" for i in range(self.columnCount())] for j in range(self.rowCount())]
         for cell in copied_cells:
             data[cell.row()][cell.column()] = cell.data()
-        table =  np.array(data)
-        table, columnIndices, _ = ArrayUtil.stripZeroRowsAndColumns(table, zero='')
-        lines = ''
+        table = np.array(data)
+        table, columnIndices, _ = ArrayUtil.stripZeroRowsAndColumns(table, zero="")
+        lines = ""
         for row in table:
             lines = lines + "\t".join([str(elem) for elem in row]) + "\n"
         lines = lines[:-1]
         remainingHeadings = [labels[index] for index in columnIndices]
         result = "\t".join(remainingHeadings) + "\n" + lines
         return result
-
 
 
 class PlotWidget(QWidget):
@@ -211,7 +284,7 @@ class PlotWidget(QWidget):
     def __init__(self, viewer: "napari.viewer.Viewer"):
         """Create a new empty plot widget.
 
-            param viewer: The napari viewer in which the widget will be displayed
+        param viewer: The napari viewer in which the widget will be displayed
         """
         super().__init__()
         self.figure = plt.figure()
@@ -223,40 +296,32 @@ class PlotWidget(QWidget):
         self.title = "Plot"
         self.X = []
         self.Y = []
-        self.area = 'left'
+        self.area = "left"
         self.tabify = True
         self.xLabel = "x"
         self.yLabel = "y"
 
-
     def createLayout(self):
-        """Create the layout of the widget.
-        """
+        """Create the layout of the widget."""
         mainLayout = QVBoxLayout()
         canvasLayout = QHBoxLayout()
         canvasLayout.addWidget(self.canvas)
         mainLayout.addLayout(canvasLayout)
         self.setLayout(mainLayout)
 
-
     def addData(self, X, Y, formatString=None):
-        """Add the data and the format string.
-        """
+        """Add the data and the format string."""
         self.X.append(X)
         self.Y.append(Y)
         if formatString:
             self.formatStrings.append(formatString)
 
-
     def clear(self):
-        """Remove everything from the plot.
-        """
+        """Remove everything from the plot."""
         self.figure.clear()
 
-
     def display(self):
-        """Display the plot as a dock widget in napari.
-        """
+        """Display the plot as a dock widget in napari."""
         self.ax.set_xlabel(self.xLabel)
         self.ax.set_ylabel(self.yLabel)
         if self.formatStrings:
@@ -266,5 +331,6 @@ class PlotWidget(QWidget):
             for x, y in zip(self.X, self.Y):
                 self.ax.plot(x, y)
         self.canvas.draw()
-        self.viewer.window.add_dock_widget(self, area=self.area, name=self.title, tabify=self.tabify)
-
+        self.viewer.window.add_dock_widget(
+            self, area=self.area, name=self.title, tabify=self.tabify
+        )

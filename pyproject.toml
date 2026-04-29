@@ -1,12 +1,12 @@
 [project]
 name = "auto-options-python"
 dynamic = ["version"]
-description = "Mange command options in python and create QWidgets for them."
+description = "Manage command options in Python and create QWidgets for them."
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
-  {name = "Volker Baecker"},
-  {email = "volker.baecker@mri.cnrs.fr"},
+  {name = "Volker Baecker", email = "volker.baecker@mri.cnrs.fr"},
+  {name = "Clément Benedetti", email = "clement.benedetti@mri.cnrs.fr"}
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -30,7 +30,6 @@ requires-python = ">=3.10"
 # See best practices: https://napari.org/stable/plugins/building_a_plugin/best_practices.html
 dependencies = [
     "appdirs",
-    "pyqt5",
     "qtpy",
     "napari",
     "pyperclip",

@@ -4,12 +4,10 @@ import json
 from copy import copy
 
 
-
 class Options:
-    """ Options are a list of parameters that are intended to be passed to an operation. Options have
+    """Options are a list of parameters that are intended to be passed to an operation. Options have
     a name, a type and a value.
     """
-
 
     def __init__(self, applicationName, optionsName):
         """
@@ -25,12 +23,11 @@ class Options:
         self.applicationName = applicationName
         self.items = {}
         self.defaultItems = None
-        appName = self.applicationName.replace(' ', '_')
+        appName = self.applicationName.replace(" ", "_")
         self.dataFolder = appdirs.user_data_dir(appName)
         os.makedirs(self.dataFolder, exist_ok=True)
-        optName = self.optionsName.replace(' ', '_')
+        optName = self.optionsName.replace(" ", "_")
         self.optionsPath = os.path.join(self.dataFolder, optName + "_options.json")
-
 
     def setDefaultValues(self, defaultItems):
         """
@@ -41,10 +38,9 @@ class Options:
         """
         self.defaultItems = defaultItems
 
-
     def getItems(self):
         """
-        Return the items stored in the options object.
+        Return a copy of the items stored in the options object.
 
         :return: A dictionary of all options in the options object.
         """
@@ -52,14 +48,12 @@ class Options:
             self.items = copy(self.defaultItems)
         return self.items
 
-
     def save(self):
         """
         Save the options as a JSON file.
         """
-        with open(self.optionsPath, 'w') as f:
+        with open(self.optionsPath, "w") as f:
             json.dump(self.getItems(), f)
-
 
     def load(self):
         """
@@ -70,20 +64,19 @@ class Options:
         with open(self.optionsPath) as f:
             items = json.load(f)
         for key, value in items.items():
-            if value['transient']:
+            if value["transient"] or key not in self.items:
                 continue
             self.items[key] = value
 
-
-    def get(self, name):
+    def get(self, name, alt=None):
         """
         Answer the option with the given name.
 
         :param name: The name of an option
-        :return: Answers the option with the given name as a dictionary
+        :param alt: The alternative value to return if the option is not found
+        :return: Answers the option with the given name as a dictionary or the alternative.
         """
-        return self.items[name]
-
+        return self.items.get(name, alt)
 
     def value(self, name):
         """
@@ -92,8 +85,16 @@ class Options:
         :param name: The name of an option
         :return: The value of the option with the given name. The type of the result depends on the type of the option.
         """
-        return self.get(name)['value']
+        return self.get(name)["value"]
 
+    def isOptional(self, name):
+        """
+        Answer whether the option with the given name is optional.
+
+        :param name: The name of an option
+        :return: A boolean that answers whether the option is optional.
+        """
+        return self.get(name)["optional"][0]
 
     def set(self, name, option):
         """
@@ -104,15 +105,14 @@ class Options:
         """
         self.items[name] = option
 
-
     def setValue(self, name, value):
         """
-        Set the value of the option with the given name to value
+        Set the value of the option with the given name to value.
+
         :param name: The name of an option
         :param value: The new value of the option
         """
-        self.get(name)['value'] = value
-
+        self.get(name)["value"] = value
 
     @classmethod
     def getCallbackName(cls, callback):
@@ -121,8 +121,15 @@ class Options:
             callbackName = callback.__name__
         return callbackName
 
-
-    def addImage(self, name='image', value=None, transient=True, position=None, callback=None):
+    def addImage(
+        self,
+        name="image",
+        value=None,
+        transient=True,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
         """
         Add an option that represents the selection of an image. Image options are often transient.
 
@@ -132,12 +139,23 @@ class Options:
         :param position: The position of the image option within the options (Could be used when dictionaries are not
                          ordered). If none is given, the next free position is used.
         :param callback: The callback function, that is called when the value of the option is changed.
+        :optional: Whether the image is optional and whether it should start active or not.
         """
-        self.set(name, self.getBaseOption(value, transient, position, callback) | {
-                            'type': 'image'})
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "image"},
+        )
 
-
-    def addLabels(self, name='labels', value=None, transient=True, position=None, callback=None):
+    def addLabels(
+        self,
+        name="labels",
+        value=None,
+        transient=True,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
         """
         Add an option that represents the selection of a labels image. Labels options are often transient.
 
@@ -147,12 +165,23 @@ class Options:
         :param position: The position of the labels option within the options (Could be used when dictionaries are not
                          ordered). If none is given, the next free position is used.
         :param callback: The callback function, that is called when the value of the option is changed.
+        :param optional: Whether the labels option is optional and whether it should start active or not.
         """
-        self.set(name, self.getBaseOption(value, transient, position, callback) | {
-            'type': 'labels'})
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "labels"},
+        )
 
-
-    def addFFT(self, name='fft', value=None, transient=True, position=None, callback=None):
+    def addFFT(
+        self,
+        name="fft",
+        value=None,
+        transient=True,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
         """
         Add an option that represents the selection of an FFT image. Image options are often transient. The FFT
         is not a standard image, since only the amplitude information is in the image, while the phase information is
@@ -164,12 +193,23 @@ class Options:
         :param position: The position of the fft option within the options. (Could be used when dictionaries are not
                          ordered). If none is given, the next free position is used.
         :param callback: A callback function, that is called when the selected fft layer changes
+        :param optional: Whether the fft option is optional and whether it should start active or not.
         """
-        self.set(name, self.getBaseOption(value, transient, position, callback) | {
-                            'type': 'fft'})
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "fft"},
+        )
 
-
-    def addPoints(self, name='points', value=None, transient=True, position=None, callback=None):
+    def addPoints(
+        self,
+        name="points",
+        value=None,
+        transient=True,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
         """
         Add an option that represents the selection of a points layer. Points options are often transient.
 
@@ -179,12 +219,24 @@ class Options:
         :param position: The position of the points option within the options (Could be used when dictionaries are not
                          ordered). If none is given, the next free position is used.
         :param callback: The callback function, that is called when the value of the option is changed.
+        :param optional: Whether the points option is optional and whether it should start active or not.
         """
-        self.set(name, self.getBaseOption(value, transient, position, callback) | {
-            'type': 'points'})
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "points"},
+        )
 
-
-    def addInt(self, name, value=1, transient=False, position=None, widget="input", callback=None):
+    def addInt(
+        self,
+        name,
+        value=1,
+        transient=False,
+        position=None,
+        widget="input",
+        callback=None,
+        optional=[False, True],
+    ):
         """
         An option that represents an integer value.
 
@@ -197,13 +249,24 @@ class Options:
                        implemented. However, an integer could also be entered in a different way, for example using
                        a slider.
         :param callback: A callback function, that is called when the value is changed via the graphical interface.
+        :param optional: Whether the integer is optional and whether it should start active or not.
         """
-        self.set(name, self.getBaseOption(value, transient, position, callback) | {
-                            'type': 'int',
-                            'widget': widget})
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "int", "widget": widget},
+        )
 
-
-    def addFloat(self, name, value=0.0, transient=False, position=None, widget="input", callback=None):
+    def addFloat(
+        self,
+        name,
+        value=0.0,
+        transient=False,
+        position=None,
+        widget="input",
+        callback=None,
+        optional=[False, True],
+    ):
         """
         An option that represents a float value.
 
@@ -216,13 +279,24 @@ class Options:
                        implemented. However, a float could also be entered in a different way, for example using
                        a slider.
         :param callback: A callback function, that is called when the value is changed via the graphical interface.
+        :param optional: Whether the float is optional and whether it should start active or not.
         """
-        self.set(name, self.getBaseOption(value, transient, position, callback) | {
-                            'type': 'float',
-                            'widget': widget})
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "float", "widget": widget},
+        )
 
-
-    def addChoice(self, name, value=None, choices=None, transient=False, position=None, callback=None):
+    def addChoice(
+        self,
+        name,
+        value=None,
+        choices=None,
+        transient=False,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
         """
         An option that represents a choice in a list of given values.
 
@@ -234,15 +308,25 @@ class Options:
                          ordered). If none is given, the next free position is used.
         :param callback: A callback function, that is called whenever the selected item is changed, whether via the gui
                          or programmatically. The implementer must take care to avoid endless loops.
+        :param optional: Whether the choice is optional and whether it should start active or not.
         """
         if not choices:
             choices = []
-        self.set(name, self.getBaseOption(value, transient, position, callback) | {
-            'type': 'choice',
-            'choices': choices})
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "choice", "choices": choices},
+        )
 
-
-    def addStr(self, name, value="", transient=False, position=None, callback=None):
+    def addStr(
+        self,
+        name,
+        value="",
+        transient=False,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
         """
         An option that represents a textual value.
 
@@ -252,14 +336,23 @@ class Options:
         :param position: The position of the option within the options. (Could be used when dictionaries are not
                          ordered). If none is given, the next free position is used.
         :param callback: A callback function, that is called when the value is changed via the graphical interface.
+        :param optional: Whether the string is optional and whether it should start active or not.
         """
-        self.set(name,
-                 self.getBaseOption(value, transient, position, callback) | {
-                     'type': 'str',
-                     'widget': "input"})
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "str", "widget": "input"},
+        )
 
-
-    def addBool(self, name, value=False, transient=False, position=None, callback=None):
+    def addBool(
+        self,
+        name,
+        value=False,
+        transient=False,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
         """
         An option that represents a binary choice.
 
@@ -270,14 +363,67 @@ class Options:
                          ordered). If none is given, the next free position is used.
         :param callback: A callback function, that is called whenever the selected item is changed, whether via the gui
                          or programmatically. The implementer must take care to avoid endless loops.
+        :param optional: Whether the boolean is optional and whether it should start active or not.
         """
-        self.set(name,
-                 self.getBaseOption(value, transient, position, callback) | {
-                     'type': 'bool',
-                     'widget': "checkbox"})
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "bool", "widget": "checkbox"},
+        )
 
+    def addFolder(
+        self,
+        name="folder",
+        value="",
+        transient=True,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
+        """
+        Add an option that represents the selection of a folder. Folder options are often transient.
 
-    def getBaseOption(self, value, transient, position, callback):
+        :param name: The name of the folder option
+        :param value: The value of the folder option (path)
+        :param transient: Whether the folder option is transient. Transient options are not saved and reloaded.
+        :param position: The position of the folder option within the options (Could be used when dictionaries are not
+                         ordered). If none is given, the next free position is used.
+        :param callback: The callback function, that is called when the value of the option is changed.
+        :param optional: Whether the folder option is optional and whether it should start active or not.
+        """
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "folder"},
+        )
+
+    def addFile(
+        self,
+        name="file",
+        value="",
+        transient=True,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
+        """
+        Add an option that represents the selection of a file. File options are often transient.
+
+        :param name: The name of the file option
+        :param value: The value of the file option (path)
+        :param transient: Whether the file option is transient. Transient options are not saved and reloaded.
+        :param position: The position of the file option within the options (Could be used when dictionaries are not
+                         ordered). If none is given, the next free position is used.
+        :param callback: The callback function, that is called when the value of the option is changed.
+        :param optional: Whether the file option is optional and whether it should start active or not.
+        """
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "file"},
+        )
+
+    def _getBaseOption(self, value, transient, position, callback, optional):
         """
         A helper method to set the parts of an option that a common to all kinds of options.
 
@@ -287,12 +433,14 @@ class Options:
                          ordered). If none is given, the next free position is used.
         :param callback: A callback function, that is called when the value of the option changes.
         """
-        option = {'value': value,
-                  'transient': transient,
-                  'position': self._getPosition(position),
-                  'callback': self.getCallbackName(callback)}
-        return option
 
+        return {
+            "value": value,
+            "transient": transient,
+            "position": self._getPosition(position),
+            "callback": self.getCallbackName(callback),
+            "optional": optional,
+        }
 
     def _getPosition(self, position):
         """
@@ -305,7 +453,20 @@ class Options:
         if not position:
             positions = [option["position"] for option in self.items.values()]
             if positions:
-                position = max([option["position"] for option in self.items.values()]) + 1
+                position = (
+                    max([option["position"] for option in self.items.values()]) + 1
+                )
             else:
                 position = 1
         return position
+
+    def size(self):
+        """
+        The size of the options is the number of options in it.
+
+        :return: The number of options in the options object.
+        """
+        return len(self.items)
+
+    def __len__(self):
+        return self.size()
