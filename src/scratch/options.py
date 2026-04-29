@@ -29,7 +29,7 @@ class Client:
         self.options.addChoice('footprint', value=None, choices=["none", "cube", "ball", "octahedron"])
         self.options.addInt('radius', value=1, widget="input")
         self.options.load()
-        self.widget = OptionsWidget(self.viewer, self.options, self.widget)
+        self.widget = OptionsWidget(self.viewer, self.options, self, sameRowMap={"size z": True})
         self.widget.addApplyButton(self.onApplyButtonClicked)
         #self.widget.addOKButton(None)
         #self.widget.addCancelButton(None)
