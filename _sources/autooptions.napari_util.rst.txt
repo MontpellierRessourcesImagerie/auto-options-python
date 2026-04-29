@@ -1,0 +1,7 @@
+autooptions.napari\_util module
+===============================
+
+.. automodule:: autooptions.napari_util
+   :members:
+   :show-inheritance:
+   :undoc-members:

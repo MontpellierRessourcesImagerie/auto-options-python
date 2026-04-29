@@ -1,0 +1,20 @@
+autooptions.layouts package
+===========================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   autooptions.layouts.base_layout
+   autooptions.layouts.grid_layout
+   autooptions.layouts.vertical_layout
+
+Module contents
+---------------
+
+.. automodule:: autooptions.layouts
+   :members:
+   :show-inheritance:
+   :undoc-members:

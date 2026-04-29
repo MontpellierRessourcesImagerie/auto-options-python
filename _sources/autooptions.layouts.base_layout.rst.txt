@@ -1,0 +1,7 @@
+autooptions.layouts.base\_layout module
+=======================================
+
+.. automodule:: autooptions.layouts.base_layout
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,7 @@
+autooptions.widget module
+=========================
+
+.. automodule:: autooptions.widget
+   :members:
+   :show-inheritance:
+   :undoc-members:
