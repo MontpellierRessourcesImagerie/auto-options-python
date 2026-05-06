@@ -17,7 +17,11 @@ class Client:
 
     def onInputChanged(self, value):
         if not value.isnumeric():
-            self.widget.widgets["size xy"].setText(str(self.options.value("size xy")))
+            self.widget.widgets["size xy"][1].setText(str(self.options.value("size xy")))
+
+
+    def onChoiceChanged(self, value):
+        print("choice changed")
 
 
     def showOptions(self):
@@ -26,10 +30,10 @@ class Client:
         self.options.addImage('image', value=None, transient=True)
         self.options.addInt('size xy', value=3, widget="input", callback=self.onInputChanged)
         self.options.addInt('size z', value=1, widget="input")
-        self.options.addChoice('footprint', value=None, choices=["none", "cube", "ball", "octahedron"])
+        self.options.addChoice('footprint', value=None, choices=["none", "cube", "ball", "octahedron"], callback=self.onChoiceChanged)
         self.options.addInt('radius', value=1, widget="input")
         self.options.load()
-        self.widget = OptionsWidget(self.viewer, self.options, self, sameRowMap={"size z": True})
+        self.widget = OptionsWidget(self.viewer, self.options, client=self, sameRowSet={"size z": True}, layout_type="vertical")
         self.widget.addApplyButton(self.onApplyButtonClicked)
         #self.widget.addOKButton(None)
         #self.widget.addCancelButton(None)
