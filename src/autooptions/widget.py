@@ -56,6 +56,11 @@ class OptionsWidget(QWidget):
         self.mainLayout = None
         self._createLayout(layout_type)
 
+    def addButton(self, name, callback):
+        button = self._createButton(name, callback, None)
+        self.buttons[name] = button
+        self._getButtonsLayout().addWidget(button)
+
     def addApplyButton(self, callback):
         """
         Add an apply button to the options widget. When the button is pressed the value are copied from the dialog
@@ -93,24 +98,28 @@ class OptionsWidget(QWidget):
         """
         Answers the apply button if it exists and None otherwise.
         """
-        if "Apply" in self.buttons.keys():
-            return self.buttons["Apply"]
-        return None
+        return self.getButton("Apply")
 
     def getOKButton(self):
         """
         Answers the ok button if it exists and None otherwise.
         """
-        if "OK" in self.buttons.keys():
-            return self.buttons["OK"]
-        return None
+        return self.getButton("OK")
 
     def getCancelButton(self):
         """
         Answers the cancel button if it exists and None otherwise.
         """
-        if "Cancel" in self.buttons.keys():
-            return self.buttons["Cancel"]
+        return self.getButton("Cancel")
+
+    def getButton(self, name):
+        """
+        Answer the button with the given name.
+        :param name: The name of the button
+        :return: The button widget with the given name
+        """
+        if name in self.buttons.keys():
+            return self.buttons[name]
         return None
 
     def shut(self):
