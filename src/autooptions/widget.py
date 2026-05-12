@@ -393,7 +393,7 @@ class OptionsWidget(QWidget):
             if not isEnabled:
                 item["value"] = None
                 continue
-            if item["type"] in ["image", "choice", "fft"]:
+            if item["type"] in ["image", "labels", "points", "choice", "fft"]:
                 text = widget.currentText()
                 item["value"] = text
             if item["type"] == "int":

@@ -28,6 +28,8 @@ class Client:
         # Create a Qt widget, which will be our window.
         self.options = Options("Test_Auto_Options", "Median Filter")
         self.options.addImage('image', value=None, transient=True)
+        self.options.addLabels()
+        self.options.addPoints()
         self.options.addInt('size xy', value=3, widget="input", callback=self.onInputChanged)
         self.options.addInt('size z', value=1, widget="input")
         self.options.addChoice('footprint', value=None, choices=["none", "cube", "ball", "octahedron"], callback=self.onChoiceChanged)
