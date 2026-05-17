@@ -376,7 +376,8 @@ class OptionsWidget(QWidget):
     @classmethod
     def _createButton(cls, name, callback, innerCallback):
         button = QPushButton(name)
-        button.clicked.connect(innerCallback)
+        if innerCallback:
+            button.clicked.connect(innerCallback)
         if callback:
             button.clicked.connect(callback)
         return button
