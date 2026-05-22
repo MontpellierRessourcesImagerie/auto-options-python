@@ -29,7 +29,7 @@ The option types currently supported are:
 The layer types (FFT, Labels, Points and Image) and Choice will be represented via combo-boxes in the dialog. Boolean
 is using a checkbox and the others are using input fields.
 
-The code to create the options-dialog in Fig.1.1 is:
+The code to create the options-dialog in .1.1 is:
 
 ```python
  import napari
@@ -48,6 +48,8 @@ The code to create the options-dialog in Fig.1.1 is:
  viewer.window.add_dock_widget(widget, name=options.optionsName)
 ```
 
+## Accessing the values of options
+
 You can access the user input of the widgets via the options name:
 
 ```python
@@ -60,6 +62,8 @@ The shortcut ``getImageLayer``, allows to directly retrieve the layer selected i
 kernelLayer = widget.getImageLayer("kernel")
 ```
 
+## Callbacks
+
 You can register callbacks for options and for buttons. The callback of an option is called when the user input for the option changed. For the predifined buttons ``apply`` and ``ok`` the values are automatically copied from the widget into the option, before the user registered callback is called.
 
 ```python
@@ -69,6 +73,8 @@ You can register callbacks for options and for buttons. The callback of an optio
  widget.addApplyButton(self.handleApplyButtonPressed)
 ```
 
+## Accessing widgets
+
 You can access a widget, for example to check that only valid values can be entered:
 
 ```python
@@ -76,6 +82,8 @@ You can access a widget, for example to check that only valid values can be ente
         if not value.isnumeric():
             self.widget.widgets["size xy"][1].setText(str(self.options.value("size xy")))
 ```
+
+## Optional options
 
 You can create optional options :) These are displayed with a checkbox to activate/deactivate them. When deactivated the option will be ignored. This allows to avoid the usage of special values in options that indicate for example that the user doesn't want to enter a value for the option in which case a default or on the fly calculated value is used. 
 
@@ -91,3 +99,28 @@ options.addImage(optional=[True, False])
   <figcaption>Fig. 1.2 - The image option is optional</figcaption>
 </figure>
 
+## Layouts
+
+Currently the ``vertical`` and the ``grid`` layout are supportet. If no layout is specified the grid layout is used. See Fig.1.1 for a vertical layout. 
+
+<figure>
+  <img src="https://github.com/user-attachments/assets/7abfa93c-0d02-4bdf-a0fa-ae975bfcbb81" alt="grid layout style="width:250", align='center'>
+  <figcaption>Fig. 1.3 - The same option's dialog as in Fig. 1.1, but with a grid layout.</figcaption>
+</figure>
+
+```python
+import napari
+from autooptions.options import Options
+from autooptions.widget import OptionsWidget
+
+viewer = napari.Viewer()
+options = Options("3D Toolbox", "Convolution")
+options.addImage()
+options.addImage(name="kernel")
+options.addChoice("mode", choices=["same", "valid", "full"])
+options.addChoice("method", choices=["auto", "direct", "fft"])
+options.load()
+widget = OptionsWidget(viewer, options, layout_type="grid")
+widget.addApplyButton(None)
+viewer.window.add_dock_widget(widget, name=options.optionsName)
+```
