@@ -1,10 +1,7 @@
 from qtpy.QtWidgets import (
-    QVBoxLayout,
     QHBoxLayout,
     QPushButton,
-    QGridLayout,
     QWidget,
-    QLabel,
 )
 from qtpy.QtGui import QColor
 from napari.utils.events import Event

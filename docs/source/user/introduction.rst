@@ -42,6 +42,6 @@ The code to create the options-dialog in Fig.1.1 is:
    options.addChoice("mode", choices=["same", "valid", "full"])
    options.addChoice("method", choices=["auto", "direct", "fft"])
    options.load()
-   widget = OptionsWidget(viewer, options, viewer)
+   widget = OptionsWidget(viewer, options, layout_type="vertical")
    widget.addApplyButton(None)
    viewer.window.add_dock_widget(widget, name=options.optionsName)

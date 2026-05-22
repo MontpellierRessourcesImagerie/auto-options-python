@@ -32,7 +32,7 @@ class Client:
         self.options.addPoints()
         self.options.addInt('size xy', value=3, widget="input", callback=self.onInputChanged)
         self.options.addInt('size z', value=1, widget="input")
-        self.options.addChoice('footprint', value=None, choices=["none", "cube", "ball", "octahedron"], callback=self.onChoiceChanged)
+        self.options.addChoice('footprint', optional=[True, False], choices=["none", "cube", "ball", "octahedron"], callback=self.onChoiceChanged)
         self.options.addInt('radius', value=1, widget="input")
         self.options.load()
         self.widget = OptionsWidget(self.viewer, self.options, client=self, sameRowSet={"size z": True}, layout_type="vertical")
