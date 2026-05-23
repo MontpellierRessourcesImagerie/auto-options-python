@@ -1,11 +1,10 @@
+import webbrowser
 from qtpy.QtWidgets import (
     QHBoxLayout,
     QPushButton,
     QWidget,
 )
-from qtpy.QtGui import QColor
 from napari.utils.events import Event
-
 from autooptions.qtutil import WidgetTool
 from autooptions.napari_util import NapariUtil
 from autooptions.layouts import LayoutFactory
@@ -47,6 +46,7 @@ class OptionsWidget(QWidget):
         self.labelComboBoxes = []
         self.pointComboBoxes = []
         self.widgets = {}
+        self.url = None
         self.sameRowSet = set() if sameRowSet is None else sameRowSet.copy()
         self.viewer.layers.events.inserted.connect(self._onLayerAddedOrRemoved)
         self.viewer.layers.events.removed.connect(self._onLayerAddedOrRemoved)
@@ -89,6 +89,18 @@ class OptionsWidget(QWidget):
         """
         button = self._createCancelButton(callback)
         self.buttons["Cancel"] = button
+        self._getButtonsLayout().addWidget(button)
+
+    def addHelpButton(self, url):
+        """
+        Adds a help button, that opens the help page under the given URL.
+        :param url: The url of the help page
+        """
+        self.url = url
+        button = QPushButton("?")
+        button.setMaximumWidth(20)
+        button.clicked.connect(self._onHelpButtonClicked)
+        self.buttons["help"] = button
         self._getButtonsLayout().addWidget(button)
 
     def getApplyButton(self):
@@ -392,6 +404,10 @@ class OptionsWidget(QWidget):
 
     def _onCancelButtonClicked(self):
         self.shut()
+
+
+    def _onHelpButtonClicked(self):
+        webbrowser.open(self.url, new=0, autoraise=True)
 
     def _transferValues(self):
         for name, item in self.options.items.items():
