@@ -39,12 +39,14 @@ class OptionsWidget(QWidget):
         self.fftLayers = self.napariUtil.getFFTLayers()
         self.labelLayers = self.napariUtil.getLabelLayers()
         self.pointLayers = self.napariUtil.getPointsLayers()
+        self.shapesLayers = self.napariUtil.getShapesLayers()
         self.buttonsLayout = None
         self.buttons = {}
         self.imageComboBoxes = []
         self.fftComboBoxes = []
         self.labelComboBoxes = []
         self.pointComboBoxes = []
+        self.shapesComboBoxes = []
         self.widgets = {}
         self.url = None
         self.sameRowSet = set() if sameRowSet is None else sameRowSet.copy()
@@ -170,6 +172,9 @@ class OptionsWidget(QWidget):
             if item["type"] == "image":
                 checkbox, widget = self._getImageWidget(name, item)
                 self.imageComboBoxes.append(widget)
+            if item["type"] == "shapes":
+                checkbox, widget = self._getShapesWidget(name, item)
+                self.shapesComboBoxes.append(widget)
             if item["type"] == "labels":
                 checkbox, widget = self._getLabelsWidget(name, item)
                 self.labelComboBoxes.append(widget)
@@ -253,6 +258,21 @@ class OptionsWidget(QWidget):
         label, widget, active = WidgetTool.getComboInput(
             f"{name}:",
             self.labelLayers,
+            callback=self._callbackFor(item["callback"]),
+            optional=item["optional"],
+        )
+
+        self.mainLayout.addToLayout(
+            name=name, optionalCheckbox=active, nameLabel=label, valueField=widget
+        )
+
+        return active, widget
+    
+    def _getShapesWidget(self, name, item):
+        self.shapesLayers = self.napariUtil.getShapesLayers()
+        label, widget, active = WidgetTool.getComboInput(
+            f"{name}:",
+            self.shapesLayers,
             callback=self._callbackFor(item["callback"]),
             optional=item["optional"],
         )
@@ -405,9 +425,9 @@ class OptionsWidget(QWidget):
     def _onCancelButtonClicked(self):
         self.shut()
 
-
     def _onHelpButtonClicked(self):
-        webbrowser.open(self.url, new=0, autoraise=True)
+        if self.url is not None:
+            webbrowser.open(self.url, new=0, autoraise=True)
 
     def _transferValues(self):
         for name, item in self.options.items.items():
@@ -416,7 +436,7 @@ class OptionsWidget(QWidget):
             if not isEnabled:
                 item["value"] = None
                 continue
-            if item["type"] in ["image", "labels", "points", "choice", "fft"]:
+            if item["type"] in ["image", "shapes", "labels", "points", "choice", "fft"]:
                 text = widget.currentText()
                 item["value"] = text
             if item["type"] == "int":
@@ -440,6 +460,7 @@ class OptionsWidget(QWidget):
         labelLayers = self.napariUtil.getLabelLayers()
         pointLayers = self.napariUtil.getPointsLayers()
         fftLayers = self.napariUtil.getFFTLayers()
+        shapesLayers = self.napariUtil.getShapesLayers()
         for comboBox in self.imageComboBoxes:
             WidgetTool.replaceItemsInComboBox(comboBox, imageLayers)
         for comboBox in self.labelComboBoxes:
@@ -448,3 +469,5 @@ class OptionsWidget(QWidget):
             WidgetTool.replaceItemsInComboBox(comboBox, pointLayers)
         for comboBox in self.fftComboBoxes:
             WidgetTool.replaceItemsInComboBox(comboBox, fftLayers)
+        for comboBox in self.shapesComboBoxes:
+            WidgetTool.replaceItemsInComboBox(comboBox, shapesLayers)

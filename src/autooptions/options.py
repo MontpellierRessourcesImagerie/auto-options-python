@@ -173,6 +173,32 @@ class Options:
             | {"type": "labels"},
         )
 
+    def addShapes(
+        self,
+        name="shapes",
+        value=None,
+        transient=True,
+        position=None,
+        callback=None,
+        optional=[False, True],
+    ):
+        """
+        Add an option that represents the selection of a shapes image. Shapes options are often transient.
+
+        :param name: The name of the shapes option
+        :param value: The value of the shapes option
+        :param transient: Whether the shapes option is transient. Transient options are not saved and reloaded.
+        :param position: The position of the shapes option within the options (Could be used when dictionaries are not
+                         ordered). If none is given, the next free position is used.
+        :param callback: The callback function, that is called when the value of the option is changed.
+        :param optional: Whether the shapes option is optional and whether it should start active or not.
+        """
+        self.set(
+            name,
+            self._getBaseOption(value, transient, position, callback, optional)
+            | {"type": "shapes"},
+        )
+
     def addFFT(
         self,
         name="fft",

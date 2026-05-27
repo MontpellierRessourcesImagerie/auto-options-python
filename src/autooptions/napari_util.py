@@ -1,6 +1,7 @@
 from napari.layers.labels.labels import Labels
 from napari.layers.points.points import Points
 from napari.layers.image.image import Image
+from napari.layers.shapes.shapes import Shapes
 
 
 
@@ -24,6 +25,15 @@ class NapariUtil:
                 :rtype: [napari.layers.image.Image.Image]
                 """
         return self.getLayersOfType(Image)
+    
+
+    def getShapesLayers(self):
+        """ Return all shapes layers
+
+                :return: A list of the shapes layers in the viewer
+                :rtype: [napari.layers.shapes.shapes.Shapes]
+                """
+        return self.getLayersOfType(Shapes)
 
 
     def getFFTLayers(self):
