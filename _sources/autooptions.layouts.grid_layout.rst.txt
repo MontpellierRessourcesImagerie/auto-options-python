@@ -1,0 +1,7 @@
+autooptions.layouts.grid\_layout module
+=======================================
+
+.. automodule:: autooptions.layouts.grid_layout
+   :members:
+   :show-inheritance:
+   :undoc-members:

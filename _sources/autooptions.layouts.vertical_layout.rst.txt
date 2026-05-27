@@ -1,0 +1,7 @@
+autooptions.layouts.vertical\_layout module
+===========================================
+
+.. automodule:: autooptions.layouts.vertical_layout
+   :members:
+   :show-inheritance:
+   :undoc-members:

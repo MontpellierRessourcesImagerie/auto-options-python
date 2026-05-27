@@ -1,0 +1,7 @@
+autooptions.qtutil module
+=========================
+
+.. automodule:: autooptions.qtutil
+   :members:
+   :show-inheritance:
+   :undoc-members:
